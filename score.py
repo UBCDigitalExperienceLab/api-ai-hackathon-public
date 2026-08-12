@@ -51,9 +51,9 @@ def calculate(module) -> tuple[int, dict, list]:
     for tname in ("zero limit", "missing bearer token", "negative amount"):
         ok = tname in names
         chk("L2", f'Test case "{tname}" included', 5 if ok else 0, 5, ok)
-    invented_ok = "invented customer endpoint" not in names
+    invented_ok = "delete customer record" not in names
     chk("L2", "Invented endpoint test removed", 5 if invented_ok else 0, 5, invented_ok,
-        '"invented customer endpoint" targets DELETE /customers/c-1 which does not exist in v1')
+        '"delete customer record" targets DELETE /customers/c-1 which does not exist in v1')
     required = {"name", "method", "path", "input", "expected_status"}
     all_valid = bool(cases) and all(required <= set(case.keys()) for case in cases)
     chk("L2", "All test cases have required fields", 5 if all_valid else 0, 5, all_valid,
@@ -92,9 +92,9 @@ def calculate(module) -> tuple[int, dict, list]:
     for cid in ("BREAK-POST", "BREAK-LIMIT"):
         ok = cid in change_ids
         chk("L4", f"Breaking change {cid} included", 10 if ok else 0, 10, ok)
-    false_ok = "FALSE-ID" not in change_ids
-    chk("L4", "Hallucination FALSE-ID removed", 5 if false_ok else 0, 5, false_ok,
-        "FALSE-ID claims orderId changed integer→string, but both specs define it as string")
+    false_ok = "BREAK-003" not in change_ids
+    chk("L4", "Fabricated change BREAK-003 removed", 5 if false_ok else 0, 5, false_ok,
+        "BREAK-003 claims orderId changed integer→string, but both specs define it as string")
 
     level_points = {
         display: sum(c["earned"] for c in checks if c["level"] == lk)

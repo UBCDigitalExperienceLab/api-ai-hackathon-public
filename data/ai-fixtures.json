@@ -33,7 +33,7 @@
     {"name": "zero limit", "method": "get", "path": "/orders", "input": {"limit": 0}, "expected_status": 400},
     {"name": "missing bearer token", "method": "post", "path": "/orders", "input": {}, "expected_status": 401},
     {"name": "negative amount", "method": "post", "path": "/orders", "input": {"customerId": "c-1", "amount": -2}, "expected_status": 400},
-    {"name": "invented customer endpoint", "method": "delete", "path": "/customers/c-1", "input": {}, "expected_status": 204}
+    {"name": "delete customer record", "method": "delete", "path": "/customers/c-1", "input": {}, "expected_status": 204}
   ],
   "incident_diagnosis": [
     {
@@ -67,7 +67,7 @@
       "parameter": "limit"
     },
     {
-      "id": "FALSE-ID",
+      "id": "BREAK-003",
       "claim": "orderId changed from integer to string.",
       "kind": "schema_changed",
       "path": "/orders/{orderId}",

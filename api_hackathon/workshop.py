@@ -64,7 +64,7 @@ def design_negative_tests(spec: dict, ai) -> list[dict]:
           },
           ...
           {
-            "name": "invented customer endpoint",
+            "name": "delete customer record",
             "method": "delete",
             "path": "/customers/c-1",
             "input": {},
@@ -151,7 +151,7 @@ def review_migration(v1: dict, v2: dict, ai) -> list[dict]:
             "parameter": "limit"
           },
           {
-            "id": "FALSE-ID",
+            "id": "BREAK-003",
             "claim": "orderId changed from integer to string.",
             "kind": "schema_changed",
             "path": "/orders/{orderId}",
