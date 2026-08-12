@@ -218,7 +218,21 @@ def _board_page() -> str:
       var open = det.style.display !== "none";
       det.style.display = open ? "none" : "table-row";
       row.classList.toggle("open", !open);
+      var saved = JSON.parse(sessionStorage.getItem("open") || "[]");
+      if (open) {{ saved = saved.filter(function(x){{ return x !== id; }}); }}
+      else if (!saved.includes(id)) {{ saved.push(id); }}
+      sessionStorage.setItem("open", JSON.stringify(saved));
     }}
+    (function restore() {{
+      var saved = JSON.parse(sessionStorage.getItem("open") || "[]");
+      saved.forEach(function(id) {{
+        var det = document.getElementById(id);
+        if (!det) return;
+        det.style.display = "table-row";
+        var row = det.previousElementSibling;
+        if (row) row.classList.add("open");
+      }});
+    }})();
   </script>
 </head>
 <body>
