@@ -14,6 +14,8 @@ Keep only findings where:
 1. The `path` and `method` actually exist in the spec
 2. The `evidence_pointer` (a JSON Pointer like `/paths/~1orders/get`) resolves to a real location in the spec
 
+**Tip:** open `http://localhost:8080/api/v1` to browse the real spec in Swagger UI — it shows exactly which paths and methods exist. The API is not running, so "Try it out" won't work; use the spec as a reference only.
+
 **Starter code behaviour:** returns all 4 findings including the hallucination.
 
 ---
@@ -26,6 +28,8 @@ Keep only test cases where:
 1. The `path` and `method` exist in the spec
 2. The `expected_status` is a plausible error code (4xx range)
 3. Every case has the required fields: `name`, `method`, `path`, `input`, `expected_status`
+
+**Tip:** open `http://localhost:8080/api/v1` to see which routes exist before deciding which test cases are targeting real endpoints. The API is not running, so "Try it out" won't work; use the spec as a reference only.
 
 **Starter code behaviour:** returns all 4 tests including the invented one.
 
@@ -62,6 +66,8 @@ Verify each claimed change by diffing the two specs directly:
 - `operation_removed`: operation exists in v1, gone in v2 -- keep it
 - `parameter_became_required`: parameter is optional in v1, required in v2 -- keep it
 - `schema_changed`: schemas must actually differ between v1 and v2 -- the `orderId` claim fails this check
+
+**Tip:** open `http://localhost:8080/api/v1` and `http://localhost:8080/api/v2` side by side to visually spot what changed before writing the diff logic. The API is not running, so "Try it out" won't work; use the specs as a reference only.
 
 **Starter code behaviour:** returns all 3 changes including the false one.
 

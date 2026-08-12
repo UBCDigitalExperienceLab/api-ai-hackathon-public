@@ -52,10 +52,20 @@ def _swagger_page(version: str) -> str:
     *{{box-sizing:border-box;margin:0;padding:0}}
     body{{font-family:system-ui,-apple-system,sans-serif}}
     {_NAV_CSS}
+    .notice{{background:#1e3a5f;color:#93c5fd;font-size:.82rem;padding:10px 24px;
+             border-bottom:1px solid #2563eb;display:flex;align-items:center;gap:8px}}
+    .notice strong{{color:#bfdbfe}}
   </style>
 </head>
 <body>
   {_nav(f"/api/v{version}")}
+  <div class="notice">
+    <span>ℹ️</span>
+    <span><strong>Reference only</strong> — this API is not running.
+    Use the spec below to understand which endpoints exist,
+    then verify AI findings against it in <code>workshop.py</code>.
+    "Try it out" will not work.</span>
+  </div>
   <div id="swagger-ui"></div>
   <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
   <script>
