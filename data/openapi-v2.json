@@ -1,0 +1,41 @@
+{
+  "openapi": "3.0.3",
+  "info": {"title": "Orders API", "version": "2.0"},
+  "paths": {
+    "/orders": {
+      "get": {
+        "operationId": "listOrders",
+        "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"name": "limit", "in": "query", "required": true, "schema": {"type": "integer", "minimum": 1, "maximum": 100}}
+        ],
+        "responses": {
+          "200": {"description": "Orders returned"},
+          "500": {"$ref": "#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/orders/{orderId}": {
+      "get": {
+        "operationId": "getOrder",
+        "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"name": "orderId", "in": "path", "required": true, "schema": {"type": "string"}}
+        ],
+        "responses": {
+          "200": {"description": "Order returned"},
+          "404": {"$ref": "#/components/responses/NotFound"}
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {"type": "http", "scheme": "bearer"}
+    },
+    "responses": {
+      "NotFound": {"description": "Resource not found"},
+      "ServerError": {"description": "Unexpected failure"}
+    }
+  }
+}

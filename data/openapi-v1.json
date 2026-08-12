@@ -1,0 +1,71 @@
+{
+  "openapi": "3.0.3",
+  "info": {"title": "Orders API", "version": "1.0"},
+  "paths": {
+    "/orders": {
+      "get": {
+        "operationId": "listOrders",
+        "parameters": [
+          {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1}}
+        ],
+        "responses": {
+          "200": {"description": "Orders returned"},
+          "500": {"$ref": "#/components/responses/ServerError"}
+        }
+      },
+      "post": {
+        "operationId": "createOrder",
+        "security": [{"bearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["customerId", "amount"],
+                "properties": {
+                  "customerId": {"type": "string"},
+                  "amount": {"type": "number", "minimum": 0.01},
+                  "status": {"type": "string", "enum": ["pending", "confirmed", "cancelled"]}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {"description": "Order created"},
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderId}": {
+      "get": {
+        "operationId": "getOrder",
+        "security": [{"bearerAuth": []}],
+        "parameters": [
+          {"name": "orderId", "in": "path", "required": true, "schema": {"type": "string"}}
+        ],
+        "responses": {
+          "200": {"description": "Order returned"},
+          "404": {"$ref": "#/components/responses/NotFound"}
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {"type": "http", "scheme": "bearer"}
+    },
+    "responses": {
+      "NotFound": {"description": "Resource not found"},
+      "ServerError": {"description": "Unexpected failure"}
+    }
+  }
+}

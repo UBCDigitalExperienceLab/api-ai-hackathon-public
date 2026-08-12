@@ -1,0 +1,78 @@
+{
+  "contract_review": [
+    {
+      "id": "AUTH-001",
+      "claim": "GET /orders has no authentication requirement.",
+      "path": "/orders",
+      "method": "get",
+      "evidence_pointer": "/paths/~1orders/get"
+    },
+    {
+      "id": "PAGE-001",
+      "claim": "The limit parameter has no maximum.",
+      "path": "/orders",
+      "method": "get",
+      "evidence_pointer": "/paths/~1orders/get/parameters/0/schema"
+    },
+    {
+      "id": "ERR-001",
+      "claim": "POST /orders uses a string error body instead of the shared error shape.",
+      "path": "/orders",
+      "method": "post",
+      "evidence_pointer": "/paths/~1orders/post/responses/400"
+    },
+    {
+      "id": "HALLUCINATION",
+      "claim": "DELETE /customers is publicly accessible.",
+      "path": "/customers",
+      "method": "delete",
+      "evidence_pointer": "/paths/~1customers/delete"
+    }
+  ],
+  "negative_tests": [
+    {"name": "zero limit", "method": "get", "path": "/orders", "input": {"limit": 0}, "expected_status": 400},
+    {"name": "missing bearer token", "method": "post", "path": "/orders", "input": {}, "expected_status": 401},
+    {"name": "negative amount", "method": "post", "path": "/orders", "input": {"customerId": "c-1", "amount": -2}, "expected_status": 400},
+    {"name": "invented customer endpoint", "method": "delete", "path": "/customers/c-1", "input": {}, "expected_status": 204}
+  ],
+  "incident_diagnosis": [
+    {
+      "cause": "The 2.4.1 database-pool change exhausted all 20 connections and caused 503 responses.",
+      "evidence": [
+        "deploy version=2.4.1 change=orders-db-pool",
+        "db_pool_wait_ms=1850 active=20 max=20",
+        "status=503 error=db_pool_timeout",
+        "rollback version=2.4.0"
+      ]
+    },
+    {
+      "cause": "A DNS outage prevented all clients from reaching the API.",
+      "evidence": ["dns_resolution_failed", "upstream_host_not_found"]
+    }
+  ],
+  "migration_review": [
+    {
+      "id": "BREAK-POST",
+      "claim": "POST /orders was removed in v2.",
+      "kind": "operation_removed",
+      "path": "/orders",
+      "method": "post"
+    },
+    {
+      "id": "BREAK-LIMIT",
+      "claim": "The limit query parameter became required.",
+      "kind": "parameter_became_required",
+      "path": "/orders",
+      "method": "get",
+      "parameter": "limit"
+    },
+    {
+      "id": "FALSE-ID",
+      "claim": "orderId changed from integer to string.",
+      "kind": "schema_changed",
+      "path": "/orders/{orderId}",
+      "method": "get",
+      "parameter": "orderId"
+    }
+  ]
+}
