@@ -12,9 +12,9 @@ The model reports OpenAPI risks, including one invented endpoint. Return only fi
 
 The model proposes negative tests, including one for an endpoint that does not exist. Keep valid operations, safe failure statuses, and a consistent test-case structure.
 
-## Level 3 — Safety and incident response
+## Level 3 — Incident diagnosis
 
-Redact tokens, email addresses, and instruction-like payload text before it reaches AI. Then select an incident diagnosis only when every cited evidence fragment appears in the logs.
+Select an incident diagnosis only when every cited evidence fragment appears verbatim in the logs.
 
 ## Level 4 — Migration reviewer
 

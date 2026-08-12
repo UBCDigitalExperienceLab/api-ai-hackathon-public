@@ -60,10 +60,10 @@ Each level takes about 15-20 minutes and builds on the same idea.
 |       |   |       |   |       |   |       |
 |  L1   |   |  L2   |   |  L3   |   |  L4   |
 |       |   |       |   |       |   |       |
-| Find  |   | Write |   | Scrub |   | Diff  |
-| real  |   | valid |   | data, |   | two   |
-| API   |   | tests |   | verify|   | API   |
-| risks |   |       |   | logs  |   | vers. |
+| Find  |   | Write |   | Verify|   | Diff  |
+| real  |   | valid |   | incid.|   | two   |
+| API   |   | tests |   | diagn.|   | API   |
+| risks |   |       |   | vs log|   | vers. |
 |  20pt |   |  25pt |   |  30pt |   |  25pt |
 +-------+   +-------+   +-------+   +-------+
                Harder each level ---->
@@ -90,22 +90,16 @@ documented operations.
 a route that never existed, gets a 404, and the team spends an hour debugging
 why the "endpoint broke."
 
-### Level 3 -- Data safety and incident response (30 points)
+### Level 3 -- Incident diagnosis (30 points)
 
-Split into two parts.
+The AI produces two possible explanations for a production incident. Only one
+is supported by the actual log file. Teams must select the diagnosis whose
+evidence appears verbatim in the logs.
 
-**Part A -- Data safety:** Before sending data to any AI tool, sensitive fields
-must be removed. The payload contains an email address, a secret token, and an
-injected instruction telling the AI to do something it should not. Teams must
-scrub all three.
-
-**Part B -- Incident diagnosis:** The AI produces two possible explanations for
-a production incident. Only one is supported by the actual log file. Teams must
-select the diagnosis whose evidence appears verbatim in the logs.
-
-**Real-world parallel:** a developer copies a support ticket -- which contains
-a customer email and a session token -- into an AI chat window. Or the team
-acts on an AI diagnosis that references a DNS failure that never occurred.
+**Real-world parallel:** a team acts on an AI diagnosis that references a DNS
+failure that never occurred. The real cause -- a database pool exhaustion -- is
+buried in the logs and takes days to find because the team trusted the wrong
+candidate.
 
 ### Level 4 -- Migration review (25 points)
 

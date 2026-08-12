@@ -61,6 +61,12 @@ python score.py --team "Reference" --impl solution
 python -m unittest discover
 ```
 
+Optional real AI via Amazon Bedrock (requires AWS credentials):
+
+```powershell
+python demo.py --bedrock
+```
+
 Optional local AI:
 
 ```powershell
@@ -76,7 +82,7 @@ The scored workshop remains fixture-based so every team receives identical input
 |---|---|---:|
 | 1 | Verify AI-generated OpenAPI findings and remove hallucinations | 20 |
 | 2 | Turn AI test ideas into valid negative API tests | 25 |
-| 3 | Redact sensitive data and verify an incident diagnosis from logs | 30 |
+| 3 | Verify a production incident diagnosis against the actual log file | 30 |
 | 4 | Verify breaking API changes across two contracts | 25 |
 
 Teams edit only `api_hackathon/workshop.py`. The reference is in `api_hackathon/reference_solution.py`.
@@ -97,12 +103,13 @@ Use the scoreboard for energy, not speed. Give recognition for strongest verific
 ```text
 api_hackathon/workshop.py           participant implementation
 api_hackathon/reference_solution.py solved example
-api_hackathon/ai.py                 fixture AI + optional Ollama adapter
+api_hackathon/ai.py                 fixture AI + Bedrock + optional Ollama adapters
 data/                               synthetic specs, logs, and AI responses
 submissions/                        one folder per team for batch scoring
 score.py                            automated 100-point scoring (+ --all)
-scoreboard.py                       dependency-free local scoreboard
-demo.py                             run every level
+scoreboard.py                       dependency-free local scoreboard (refreshes every 10 s)
+demo.py                             run every level and print raw AI output
+interact.py                         interactive AI assistant with per-level chat (Bedrock)
 tests/                              kit verification
 ```
 
