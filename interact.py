@@ -124,9 +124,15 @@ def chat_loop(client, level_num, level_name, source_data, fixture_findings):
     """Free-form chat about a level."""
     fixture_json = json.dumps(fixture_findings, indent=2)
     system = (
-        f"You are a concise coding assistant helping a developer with Level {level_num} "
-        f"of an API hackathon: {level_name}.\n\n"
-        f"The AI produced these findings (some may be hallucinations):\n{fixture_json}\n\n"
+        f"You are a concise coding assistant helping a developer with an API hackathon. "
+        f"The hackathon has 4 levels the participant can access in any order:\n"
+        f"  Level 1 — Contract review (20 pts)\n"
+        f"  Level 2 — Negative tests (25 pts)\n"
+        f"  Level 3 — Safety + incident (30 pts)\n"
+        f"  Level 4 — Migration review (25 pts)\n\n"
+        f"The participant is currently working on Level {level_num}: {level_name}. "
+        f"If they ask about a different level, tell them to type 'done' to return to the menu and select it.\n\n"
+        f"The AI produced these findings for Level {level_num} (some may be hallucinations):\n{fixture_json}\n\n"
         f"The authoritative source data is:\n{source_data}\n\n"
         "Help the developer understand the findings, spot hallucinations, and write "
         "Python verification code for workshop.py. Be brief and practical. "
