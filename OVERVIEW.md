@@ -1,6 +1,6 @@
-# API AI Hackathon -- Overview for Decision Makers
+# API AI Workshop -- Overview for Decision Makers
 
-This document explains what the hackathon is, why it matters, and how it runs.
+This document explains what the workshop is, why it matters, and how it runs.
 No technical background is needed to read this.
 
 ---
@@ -16,7 +16,7 @@ of a system.
 If a developer trusts that output without checking it, the team acts on false
 information.
 
-This hackathon teaches one practical skill:
+This workshop teaches one practical skill:
 
 > **How to treat AI output as untrusted input and verify it before using it.**
 
@@ -148,7 +148,7 @@ checks passed and which failed, with a short explanation of what went wrong.
 ```
 Facilitator screen (projected)
 +--------------------------------------------+
-|  API Hackathon Scoreboard                  |
+|  API Workshop Progress Dashboard           |
 |                                            |
 |  # | Team        | Score | L1 L2 L3 L4    |
 |  1 | Team Alpha  |  85   | 20 25 20 20    |
@@ -200,7 +200,7 @@ Each team's laptop
 
 AI coding assistants reduce the time to produce a first draft of almost any
 technical artifact. They do not reduce the need for human judgment -- they
-shift where that judgment is applied. This hackathon gives teams a safe,
+shift where that judgment is applied. This workshop gives teams a safe,
 low-stakes environment to discover that gap themselves, develop a habit of
 verification, and leave with a concrete technique for doing it. The lesson
 takes three hours and generalises to every AI tool the team already uses.

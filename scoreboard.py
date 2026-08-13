@@ -17,7 +17,7 @@ LEVEL_META = {
 # ── Navigation bar (shared across pages) ─────────────────────────────────────
 
 def _nav(active: str = "/") -> str:
-    links = [("/", "Scoreboard"), ("/guide", "Getting Started"), ("/api/v1", "API v1"), ("/api/v2", "API v2")]
+    links = [("/", "Progress"), ("/guide", "Getting Started"), ("/api/v1", "API v1"), ("/api/v2", "API v2")]
     items = "".join(
         f'<a data-path="{href}"{" class=\"active\"" if href == active else ""}>{label}</a>'
         for href, label in links
@@ -49,7 +49,7 @@ def _nav(active: str = "/") -> str:
     )
     return (
         '<nav>'
-        '<span class="brand">API Hackathon</span>'
+        '<span class="brand">API Workshop</span>'
         f'{items}'
         '</nav>'
         + fix
@@ -112,11 +112,14 @@ def _swagger_page(version: str) -> str:
 
 def _board_page() -> str:
     entries = json.loads(BOARD.read_text()) if BOARD.exists() else []
+    entries.sort(key=lambda e: e["team"].lower())
+    max_score = sum(lmax for _, lmax in LEVEL_META.values())
 
     rows = ""
-    for rank, entry in enumerate(entries, 1):
+    for idx, entry in enumerate(entries):
         team = html.escape(entry["team"])
         score = entry["score"]
+        pct = round(score / max_score * 100) if max_score else 0
         updated = entry.get("updated", "")[:16].replace("T", " ") + " UTC"
         checks = entry.get("checks", [])
 
@@ -124,11 +127,11 @@ def _board_page() -> str:
         bars = ""
         for lname, (lshort, lmax) in LEVEL_META.items():
             pts = entry["levels"].get(lname, 0)
-            pct = round(pts / lmax * 100) if lmax else 0
+            lpct = round(pts / lmax * 100) if lmax else 0
             bars += (
                 f'<div class="lb">'
                 f'<span class="lb-key">{lshort}</span>'
-                f'<div class="lb-track"><div class="lb-fill" style="width:{pct}%"></div></div>'
+                f'<div class="lb-track"><div class="lb-fill" style="width:{lpct}%"></div></div>'
                 f'<span class="lb-val">{pts}</span>'
                 f'</div>'
             )
@@ -163,24 +166,26 @@ def _board_page() -> str:
             )
 
         rows += f"""
-<tr class="tr" onclick="toggle(this)" data-id="d{rank}">
-  <td class="rank">{rank}</td>
+<tr class="tr" onclick="toggle(this)" data-id="d{idx}">
   <td class="tname">{team}</td>
-  <td class="tscore"><strong>{score}</strong><span class="of">/{sum(lmax for _, lmax in LEVEL_META.values())}</span></td>
+  <td class="tprogress">
+    <div class="pct-val">{pct}%</div>
+    <div class="pbar-wrap"><div class="pbar-fill" style="width:{pct}%"></div></div>
+  </td>
   <td class="tbars">{bars}</td>
   <td class="tup">{updated}</td>
   <td class="tarrow">▶</td>
 </tr>
-<tr id="d{rank}" class="detail-row" style="display:none">
-  <td colspan="6" class="detail-cell">
+<tr id="d{idx}" class="detail-row" style="display:none">
+  <td colspan="5" class="detail-cell">
     <div class="detail-inner">{detail_inner}</div>
   </td>
 </tr>"""
 
     if not rows:
         rows = (
-            '<tr><td colspan="6" class="empty">'
-            'No scores yet — run <code>python score.py --all</code> or '
+            '<tr><td colspan="5" class="empty">'
+            'No progress yet — run <code>python score.py --all</code> or '
             '<code>python score.py --team "Your Team"</code>'
             '</td></tr>'
         )
@@ -191,7 +196,7 @@ def _board_page() -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="refresh" content="30">
-  <title>API AI Hackathon – Scoreboard</title>
+  <title>API Workshop – Progress Dashboard</title>
   <style>
     :root{{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--sub:#94a3b8;--accent:#3b82f6}}
     *{{box-sizing:border-box;margin:0;padding:0}}
@@ -206,10 +211,11 @@ def _board_page() -> str:
         letter-spacing:.07em;color:var(--sub);border-bottom:1px solid var(--border)}}
     .tr td{{padding:14px;border-bottom:1px solid var(--border);vertical-align:middle;cursor:pointer}}
     .tr:hover td{{background:rgba(59,130,246,.06)}}
-    .rank{{color:var(--sub);font-size:.9rem;width:36px}}
     .tname{{font-weight:600}}
-    .tscore strong{{font-size:1.25rem;color:var(--accent)}}
-    .of{{color:var(--sub);font-size:.85rem}}
+    .tprogress{{min-width:110px}}
+    .pct-val{{font-size:1.1rem;font-weight:700;color:var(--accent);margin-bottom:4px}}
+    .pbar-wrap{{background:#0f172a;border-radius:999px;height:6px;border:1px solid var(--border);overflow:hidden;min-width:80px}}
+    .pbar-fill{{height:100%;border-radius:999px;background:var(--accent)}}
     .tbars{{min-width:200px}}
     .lb{{display:flex;align-items:center;gap:6px;margin:2px 0}}
     .lb-key{{font-size:.7rem;color:var(--sub);width:18px;flex-shrink:0}}
@@ -221,7 +227,7 @@ def _board_page() -> str:
     .tarrow{{color:var(--sub);font-size:.75rem;width:20px;text-align:center;transition:transform .15s}}
     .tr.open .tarrow{{transform:rotate(90deg)}}
     .detail-row td{{padding:0}}
-    .detail-inner{{padding:16px 20px 20px 56px;background:#090f1a;border-bottom:1px solid var(--border)}}
+    .detail-inner{{padding:16px 20px 20px 40px;background:#090f1a;border-bottom:1px solid var(--border)}}
     .dcheck-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}}
     .dg{{display:flex;flex-direction:column;gap:5px}}
     .dg-title{{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
@@ -230,7 +236,6 @@ def _board_page() -> str:
     .dp{{background:#0c2a1a;border:1px solid #166534}}
     .df{{background:#2a0c0c;border:1px solid #7f1d1d}}
     .dpts{{font-weight:700;color:var(--sub);margin-left:4px}}
-    .dn{{color:#f87171;font-size:.76rem}}
     .empty{{text-align:center;color:var(--sub);padding:48px;font-size:.9rem}}
     .empty code{{background:#1e293b;padding:2px 6px;border-radius:4px}}
   </style>
@@ -261,12 +266,12 @@ def _board_page() -> str:
 <body>
   {_nav("/")}
   <div class="wrap">
-    <h1>Scoreboard</h1>
+    <h1>Workshop Progress</h1>
     <p class="sub">Click any row to expand per-check detail. Auto-refreshes every 30 s.</p>
     <table>
       <thead>
         <tr>
-          <th>#</th><th>Team</th><th>Score</th>
+          <th>Team</th><th>Progress</th>
           <th>Level breakdown</th><th>Last updated</th><th></th>
         </tr>
       </thead>
@@ -291,7 +296,7 @@ _GUIDE_TEMPLATE = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>API Hackathon — Getting Started</title>
+  <title>API Workshop — Getting Started</title>
   <style>
     <<<NAV_CSS>>>
     :root{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--sub:#94a3b8;--accent:#3b82f6;--green:#22c55e}
@@ -332,7 +337,7 @@ _GUIDE_TEMPLATE = """<!doctype html>
   <<<NAV>>>
   <div class="wrap">
     <h1>Getting Started</h1>
-    <p class="sub">Follow these steps to complete the hackathon. Use ← → arrow keys to navigate.</p>
+    <p class="sub">Follow these steps to complete the workshop. Use ← → arrow keys to navigate.</p>
     <div class="progress" id="prog"></div>
     <div class="term">
       <div class="tbar">
@@ -362,7 +367,7 @@ const S=[
    lines:[
     {k:"cmd",v:"python interact.py"},
     {k:"out",v:`════════════════════════════════════════════════
-   API AI Hackathon — Interactive Assistant
+   API AI Workshop — Interactive Assistant
    Functions started: 0/4
 ════════════════════════════════════════════════
 
@@ -431,7 +436,7 @@ def review_contract(spec: dict, ai) -> list[dict]:
             verified.append(f)
     return verified`},
   ]},
-  {title:"6 — Check your score",
+  {title:"6 — Check your progress",
    hint:"Run the scorer any time. It opens an HTML report in your browser showing exactly which checks passed or failed.",
    lines:[
     {k:"cmd",v:'python score.py --team "Team Alpha" --open'},
@@ -463,7 +468,7 @@ def review_contract(spec: dict, ai) -> list[dict]:
     {k:"you",v:"done"},
     {k:"out",v:`
 ════════════════════════════════════════════════
-   API AI Hackathon — Interactive Assistant
+   API AI Workshop — Interactive Assistant
    Functions started: 1/4
 ════════════════════════════════════════════════
 

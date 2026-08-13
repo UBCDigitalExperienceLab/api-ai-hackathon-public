@@ -1,4 +1,4 @@
-# Hackathon Tasks
+# Workshop Tasks
 
 AI output is untrusted input. Your job is not to produce more output; it is to make the output useful and defensible.
 

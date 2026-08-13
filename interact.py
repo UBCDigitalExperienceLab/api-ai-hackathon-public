@@ -115,7 +115,7 @@ def show_menu(impl_status):
     started_total = sum(1 for v in impl_status.values() if v)
     total_funcs = len(impl_status)
     print(f"\n{'═' * 60}")
-    print("   API AI Hackathon — Interactive Assistant")
+    print("   API AI Workshop — Interactive Assistant")
     print(f"   Functions started: {started_total}/{total_funcs}")
     print(f"{'═' * 60}")
     print("\n   Which level do you want to work on?\n")
@@ -218,8 +218,8 @@ def chat_loop(client, level_num, level_name, source_data, fixture_findings):
             "The participant has not yet written any implementation for this level.\n\n"
         )
         return (
-            f"You are a concise coding assistant for an API hackathon. "
-            f"The hackathon has 4 levels the participant can access in any order:\n"
+            f"You are a concise coding assistant for an API workshop. "
+            f"The workshop has 4 levels the participant can access in any order:\n"
             f"  Level 1 — Contract review (20 pts)\n"
             f"  Level 2 — Negative tests (25 pts)\n"
             f"  Level 3 — Incident response (30 pts)\n"

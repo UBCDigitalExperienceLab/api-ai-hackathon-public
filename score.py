@@ -266,7 +266,7 @@ def score_one(team: str, module, report_path: Path) -> tuple[int, dict, list]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Score hackathon workshop.py and update the shared scoreboard."
+        description="Score workshop.py and update the shared progress dashboard."
     )
     parser.add_argument("--team", default="Local team",
                         help="Team name for a single-run score (ignored with --all).")
