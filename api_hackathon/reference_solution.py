@@ -10,9 +10,6 @@ Every function follows the same three-step pattern:
 The AI is treated as an untrusted source of suggestions, not as an authority.
 """
 
-import re
-
-
 # ---------------------------------------------------------------------------
 # Shared helpers
 # ---------------------------------------------------------------------------
@@ -114,62 +111,6 @@ def design_negative_tests(spec: dict, ai) -> list[dict]:
         if _operation(spec, case["path"], case["method"])
         and case["expected_status"] in allowed_statuses
     ]
-
-
-# ---------------------------------------------------------------------------
-# Level 3 -- Data safety
-# ---------------------------------------------------------------------------
-
-def sanitize_for_ai(payload):
-    """Redact sensitive data recursively before it reaches an AI model.
-
-    Three distinct threat types are handled, each requiring a different
-    approach:
-
-    Secret keys (dict key matching):
-        Keys like "authorization", "token", "password", and "api_key" carry
-        credentials regardless of their value. The entire value is replaced
-        with "[REDACTED]" rather than inspecting the value content, because
-        any value under these keys is sensitive by definition.
-        Matching on key.lower() handles mixed-case field names.
-
-    Email addresses (regex substitution):
-        Emails are PII. They appear inside string values, so the key name
-        cannot be used to detect them. A standard email pattern replaces
-        each match inline, preserving the rest of the string. This is safer
-        than dropping the field entirely because the non-PII content may
-        still be useful context for the AI.
-
-    Prompt injection (regex detection + full replacement):
-        The string "Ignore previous instructions..." is an attempt to
-        hijack the AI's behaviour. Unlike PII, the injected text poisons
-        the entire string, so the whole value is replaced rather than just
-        the matching substring. The regex is case-insensitive and handles
-        minor variations ("ignore all previous instructions", etc.).
-
-    Recursion over dicts and lists:
-        Real API payloads are nested. A recursive approach ensures that
-        sensitive data embedded at any depth is caught, not just at the
-        top level. Returning non-string, non-container values unchanged
-        (the final return) is safe because numbers and booleans cannot
-        carry any of the three threat types.
-    """
-    secret_keys = {"token", "authorization", "api_key", "password"}
-    injection = re.compile(r"ignore (all |the )?(previous|prior) instructions", re.I)
-    email = re.compile(r"\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b")
-
-    if isinstance(payload, dict):
-        return {
-            key: "[REDACTED]" if key.lower() in secret_keys else sanitize_for_ai(value)
-            for key, value in payload.items()
-        }
-    if isinstance(payload, list):
-        return [sanitize_for_ai(value) for value in payload]
-    if isinstance(payload, str):
-        if injection.search(payload):
-            return "[REMOVED UNTRUSTED INSTRUCTION]"
-        return email.sub("[REDACTED EMAIL]", payload)
-    return payload
 
 
 # ---------------------------------------------------------------------------

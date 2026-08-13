@@ -9,7 +9,7 @@ DATA = Path(__file__).parent / "data"
 LEVEL_META = {
     "L1 Contract review": ("L1", 20),
     "L2 Test design": ("L2", 25),
-    "L3 Safety + incident": ("L3", 30),
+    "L3 Incident diagnosis": ("L3", 30),
     "L4 Migration": ("L4", 25),
 }
 
@@ -147,13 +147,10 @@ def _board_page() -> str:
                 for c in lc:
                     cls = "dp" if c["passed"] else "df"
                     icon = "✅" if c["passed"] else "❌"
-                    note = (f' <span class="dn">— {html.escape(c["note"])}</span>'
-                            if c.get("note") and not c["passed"] else "")
                     items += (
                         f'<div class="dc {cls}">'
                         f'{icon} {html.escape(c["name"])}'
                         f' <span class="dpts">{c["earned"]}/{c["max"]}</span>'
-                        f'{note}'
                         f'</div>'
                     )
                 groups += f'<div class="dg"><div class="dg-title">{lk}</div>{items}</div>'
@@ -169,7 +166,7 @@ def _board_page() -> str:
 <tr class="tr" onclick="toggle(this)" data-id="d{rank}">
   <td class="rank">{rank}</td>
   <td class="tname">{team}</td>
-  <td class="tscore"><strong>{score}</strong><span class="of">/100</span></td>
+  <td class="tscore"><strong>{score}</strong><span class="of">/{sum(lmax for _, lmax in LEVEL_META.values())}</span></td>
   <td class="tbars">{bars}</td>
   <td class="tup">{updated}</td>
   <td class="tarrow">▶</td>
@@ -441,7 +438,7 @@ def review_contract(spec: dict, ai) -> list[dict]:
     {k:"out",v:`Team Alpha: 20/100
   L1 Contract review: 20
   L2 Test design: 0
-  L3 Incident response: 0
+  L3 Incident diagnosis: 0
   L4 Migration: 0
   report → report.html`},
   ]},
