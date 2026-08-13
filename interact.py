@@ -200,7 +200,7 @@ def show_findings(client, level_num, level_name, fixture_findings):
     return stream(client, system, messages)
 
 
-def chat_loop(client, level_num, level_name, source_data, fixture_findings, participant_code):
+def chat_loop(client, level_num, level_name, source_data, fixture_findings):
     """
     Free-form chat about a level.
 
@@ -284,7 +284,7 @@ def run_level(client, level_num):
     show_level_status(impl_status, level_num)
     task_key, source_data, fixture_findings = load_level_data(level_num)
     show_findings(client, level_num, level_name, fixture_findings)
-    return chat_loop(client, level_num, level_name, source_data, fixture_findings, None)
+    return chat_loop(client, level_num, level_name, source_data, fixture_findings)
 
 
 def main():
