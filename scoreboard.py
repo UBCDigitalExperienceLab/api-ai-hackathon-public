@@ -190,7 +190,7 @@ def _board_page() -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="refresh" content="10">
+  <meta http-equiv="refresh" content="30">
   <title>API AI Hackathon – Scoreboard</title>
   <style>
     :root{{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--sub:#94a3b8;--accent:#3b82f6}}
@@ -246,7 +246,7 @@ def _board_page() -> str:
       else if (!saved.includes(id)) {{ saved.push(id); }}
       sessionStorage.setItem("open", JSON.stringify(saved));
     }}
-    (function restore() {{
+    document.addEventListener("DOMContentLoaded", function() {{
       var saved = JSON.parse(sessionStorage.getItem("open") || "[]");
       saved.forEach(function(id) {{
         var det = document.getElementById(id);
@@ -255,14 +255,14 @@ def _board_page() -> str:
         var row = det.previousElementSibling;
         if (row) row.classList.add("open");
       }});
-    }})();
+    }});
   </script>
 </head>
 <body>
   {_nav("/")}
   <div class="wrap">
     <h1>Scoreboard</h1>
-    <p class="sub">Click any row to expand per-check detail. Auto-refreshes every 5 s.</p>
+    <p class="sub">Click any row to expand per-check detail. Auto-refreshes every 30 s.</p>
     <table>
       <thead>
         <tr>
