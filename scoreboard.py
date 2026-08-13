@@ -49,7 +49,7 @@ def _nav(active: str = "/") -> str:
     )
     return (
         '<nav>'
-        '<span class="brand">API Workshop</span>'
+        '<span class="brand">Workshop</span>'
         f'{items}'
         '</nav>'
         + fix
