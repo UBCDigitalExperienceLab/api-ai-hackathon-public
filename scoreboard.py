@@ -17,7 +17,7 @@ LEVEL_META = {
 # ── Navigation bar (shared across pages) ─────────────────────────────────────
 
 def _nav(active: str = "/") -> str:
-    links = [("/", "Scoreboard"), ("/api/v1", "API v1"), ("/api/v2", "API v2")]
+    links = [("/", "Scoreboard"), ("/guide", "Getting Started"), ("/api/v1", "API v1"), ("/api/v2", "API v2")]
     items = "".join(
         f'<a href="{href}"{"  class=\"active\"" if href == active else ""}>{label}</a>'
         for href, label in links
@@ -254,6 +254,280 @@ def _board_page() -> str:
 </html>"""
 
 
+# ── Getting-started guide ─────────────────────────────────────────────────────
+
+def _guide_page() -> str:
+    # Uses placeholder substitution to avoid f-string brace escaping in CSS/JS.
+    nav_css = _NAV_CSS
+    nav_bar = _nav("/guide")
+    return _GUIDE_TEMPLATE.replace("<<<NAV_CSS>>>", nav_css).replace("<<<NAV>>>", nav_bar)
+
+
+_GUIDE_TEMPLATE = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>API Hackathon — Getting Started</title>
+  <style>
+    <<<NAV_CSS>>>
+    :root{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--sub:#94a3b8;--accent:#3b82f6;--green:#22c55e}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    .wrap{max-width:800px;margin:0 auto;padding:32px 20px}
+    h1{font-size:1.4rem;font-weight:700;margin-bottom:4px}
+    .sub{color:var(--sub);font-size:.88rem;margin-bottom:24px}
+    .progress{display:flex;gap:6px;align-items:center;margin-bottom:22px}
+    .dot{width:9px;height:9px;border-radius:50%;background:var(--border);transition:background .25s;flex-shrink:0}
+    .dot.active{background:var(--accent)}
+    .dot.done{background:var(--green)}
+    .prog-label{font-size:.8rem;color:var(--sub);margin-left:10px}
+    .term{background:#020817;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:18px}
+    .tbar{background:#1e293b;padding:9px 14px;display:flex;gap:7px;align-items:center;border-bottom:1px solid var(--border)}
+    .tc{width:11px;height:11px;border-radius:50%}
+    .tc-r{background:#ef4444}.tc-y{background:#f59e0b}.tc-g{background:#22c55e}
+    .ttitle{font-size:.73rem;color:var(--sub);margin-left:6px}
+    .tbody{padding:16px 20px;font-family:"SF Mono",Monaco,Consolas,monospace;font-size:.8rem;line-height:1.75;min-height:200px;max-height:340px;overflow-y:auto;color:#e2e8f0;white-space:pre-wrap;word-break:break-word}
+    .p{color:var(--green)}
+    .c{color:#f1f5f9}
+    .o{color:#94a3b8}
+    .cursor{display:inline-block;width:7px;height:.9em;background:var(--accent);vertical-align:text-bottom;animation:blink .75s step-end infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .stitle{font-size:1.05rem;font-weight:600;margin-bottom:6px}
+    .shint{color:var(--sub);font-size:.88rem;line-height:1.6;margin-bottom:22px}
+    .nav{display:flex;gap:10px;align-items:center}
+    .btn{padding:8px 18px;border-radius:7px;border:none;font-size:.88rem;font-weight:500;cursor:pointer;transition:opacity .15s}
+    .btn:disabled{opacity:.3;cursor:not-allowed}
+    .bs{background:var(--card);color:var(--text);border:1px solid var(--border)}
+    .bp{background:var(--accent);color:#fff}
+    .bs:not(:disabled):hover{background:#253347}
+    .bp:not(:disabled):hover{opacity:.85}
+    .sc{color:var(--sub);font-size:.82rem;margin-left:auto}
+  </style>
+</head>
+<body>
+  <<<NAV>>>
+  <div class="wrap">
+    <h1>Getting Started</h1>
+    <p class="sub">Follow these steps to complete the hackathon. Use ← → arrow keys to navigate.</p>
+    <div class="progress" id="prog"></div>
+    <div class="term">
+      <div class="tbar">
+        <div class="tc tc-r"></div><div class="tc tc-y"></div><div class="tc tc-g"></div>
+        <span class="ttitle">bash — /environment/api-ai-hackathon-public</span>
+      </div>
+      <div class="tbody" id="term"></div>
+    </div>
+    <div class="stitle" id="stitle"></div>
+    <div class="shint" id="shint"></div>
+    <div class="nav">
+      <button class="btn bs" id="bprev" onclick="go(-1)">&#8592; Previous</button>
+      <button class="btn bp" id="bnext" onclick="go(1)">Next &#8594;</button>
+      <span class="sc" id="sc"></span>
+    </div>
+  </div>
+<script>
+const S=[
+  {title:"1 — Set up your environment",
+   hint:"Activate the Python virtual environment once per terminal session before running any commands.",
+   lines:[
+    {k:"cmd",v:"source /environment/.venv/bin/activate"},
+    {k:"cmd",v:"cd /environment/api-ai-hackathon-public"},
+  ]},
+  {title:"2 — Start the interactive assistant",
+   hint:"python interact.py opens an AI-powered menu. It shows which functions you have started and lets you explore each level with real AI feedback.",
+   lines:[
+    {k:"cmd",v:"python interact.py"},
+    {k:"out",v:`════════════════════════════════════════════════
+   API AI Hackathon — Interactive Assistant
+   Functions started: 0/4
+════════════════════════════════════════════════
+
+   Which level do you want to work on?
+
+     1  Contract review       [    ]  0/1 started
+     2  Negative tests        [    ]  0/1 started
+     3  Incident response     [    ]  0/1 started
+     4  Migration review      [    ]  0/1 started
+
+     q  Quit
+
+   Enter a number: `},
+  ]},
+  {title:"3 — Pick a level",
+   hint:"Type a number to enter a level. The AI streams its findings — some may be hallucinations. Your job is to find which ones.",
+   lines:[
+    {k:"inp",v:"1"},
+    {k:"out",v:`
+   The AI reviewed the OpenAPI v1 spec. Keep only
+   findings whose path and method exist in the spec.
+
+  [not started]  review_contract
+
+──────────────────────────────────────────────
+  Level 1 — Contract review
+──────────────────────────────────────────────
+
+I found four potential issues in this API contract:
+
+[
+  {"id":"AUTH-001",      "path":"/orders",    "method":"get"},
+  {"id":"PAGE-001",      "path":"/orders",    "method":"get"},
+  {"id":"ERR-001",       "path":"/orders",    "method":"post"},
+  {"id":"HALLUCINATION", "path":"/customers", "method":"delete"}
+]`},
+  ]},
+  {title:"4 — Ask the AI for help",
+   hint:"You can ask anything about the current level. The AI will guide you without giving away the answer. Type a level number (1–4) to switch levels at any time.",
+   lines:[
+    {k:"you",v:"how do I check if an endpoint exists in the spec?"},
+    {k:"out",v:`
+AI: Check spec["paths"]. If the path is not a key
+    in that dict, the endpoint does not exist.
+
+    For each finding, verify both:
+      path   in spec["paths"]
+      method in spec["paths"][path]
+
+    If either check fails, remove the finding.`},
+  ]},
+  {title:"5 — Edit workshop.py",
+   hint:"Add your verification logic to the relevant function. This is the only file you need to edit. Each function corresponds to one level.",
+   lines:[
+    {k:"out",v:`# api_hackathon/workshop.py — Level 1
+
+def review_contract(spec: dict, ai) -> list[dict]:
+    findings = ai.ask("contract_review", spec)
+
+    verified = []
+    for f in findings:
+        path   = f.get("path", "")
+        method = f.get("method", "")
+        if (path in spec["paths"] and
+                method in spec["paths"][path]):
+            verified.append(f)
+    return verified`},
+  ]},
+  {title:"6 — Check your score",
+   hint:"Run the scorer any time. It opens an HTML report in your browser showing exactly which checks passed or failed.",
+   lines:[
+    {k:"cmd",v:'python score.py --team "Team Alpha" --open'},
+    {k:"out",v:`Team Alpha: 20/100
+  L1 Contract review: 20
+  L2 Test design: 0
+  L3 Incident response: 0
+  L4 Migration: 0
+  report → report.html`},
+  ]},
+  {title:"7 — Jump between levels",
+   hint:"From within any level's chat, type a level number to switch directly. You can work on levels in any order.",
+   lines:[
+    {k:"you",v:"2"},
+    {k:"out",v:`
+   Some tests target endpoints that do not exist.
+   Your job: keep only tests whose path and method
+   exist in the spec.
+
+  [not started]  design_negative_tests
+
+──────────────────────────────────────────────
+  Level 2 — Negative tests
+──────────────────────────────────────────────`},
+  ]},
+  {title:"8 — Track your progress",
+   hint:"Type 'done' to return to the menu. The menu re-reads workshop.py each time, so it always shows your latest progress.",
+   lines:[
+    {k:"you",v:"done"},
+    {k:"out",v:`
+════════════════════════════════════════════════
+   API AI Hackathon — Interactive Assistant
+   Functions started: 1/4
+════════════════════════════════════════════════
+
+   Which level do you want to work on?
+
+     1  Contract review       [done]  1/1 started
+     2  Negative tests        [    ]  0/1 started
+     3  Incident response     [    ]  0/1 started
+     4  Migration review      [    ]  0/1 started
+
+   Enter a number: `},
+  ]},
+];
+
+let cur=0, busy=false, stop=false, tid=null;
+
+function mkProg(){
+  const el=document.getElementById("prog");
+  el.innerHTML=S.map((_,i)=>`<div class="dot" id="d${i}"></div>`).join("")+
+    '<span class="prog-label" id="pl"></span>';
+}
+function updProg(){
+  S.forEach((_,i)=>{
+    const d=document.getElementById("d"+i);
+    d.className="dot"+(i<cur?" done":i===cur?" active":"");
+  });
+  document.getElementById("pl").textContent="Step "+(cur+1)+" of "+S.length;
+  document.getElementById("sc").textContent=(cur+1)+" / "+S.length;
+}
+function setNav(ok){
+  document.getElementById("bprev").disabled=cur===0;
+  document.getElementById("bnext").disabled=!ok;
+  document.getElementById("bnext").textContent=cur===S.length-1?"Done ✓":"Next →";
+}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function sleep(ms){return new Promise(r=>{tid=setTimeout(r,ms);});}
+
+async function animStep(idx){
+  stop=false; busy=true; setNav(false);
+  const term=document.getElementById("term");
+  term.innerHTML="";
+  const cur_el=document.createElement("span");
+  cur_el.className="cursor"; term.appendChild(cur_el);
+  document.getElementById("stitle").textContent=S[idx].title;
+  document.getElementById("shint").textContent=S[idx].hint;
+  for(const ln of S[idx].lines){
+    if(stop) break;
+    if(ln.k==="cmd"||ln.k==="inp"||ln.k==="you"){
+      const row=document.createElement("div");
+      const label=ln.k==="you"?"You: ":"$ ";
+      row.innerHTML=`<span class="p">${esc(label)}</span><span class="c" id="tt"></span>`;
+      term.insertBefore(row,cur_el);
+      const tt=row.querySelector("#tt"); tt.id="";
+      const spd=ln.k==="cmd"?14:28;
+      for(let i=0;i<=ln.v.length;i++){
+        if(stop) break;
+        tt.textContent=ln.v.slice(0,i);
+        await sleep(spd);
+      }
+      await sleep(160);
+    } else {
+      await sleep(100);
+      const row=document.createElement("div");
+      row.className="o"; row.textContent=ln.v;
+      term.insertBefore(row,cur_el);
+      term.scrollTop=term.scrollHeight;
+      await sleep(180);
+    }
+  }
+  busy=false; setNav(true); updProg();
+}
+function go(dir){
+  if(dir>0&&cur===S.length-1) return;
+  stop=true; if(tid) clearTimeout(tid);
+  cur=Math.max(0,Math.min(S.length-1,cur+dir));
+  updProg(); setTimeout(()=>animStep(cur),60);
+}
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"||e.key==="Enter") go(1);
+  if(e.key==="ArrowLeft") go(-1);
+});
+mkProg(); updProg(); setNav(false); animStep(0);
+</script>
+</body>
+</html>"""
+
+
 # ── HTTP handler ──────────────────────────────────────────────────────────────
 
 class Handler(BaseHTTPRequestHandler):
@@ -262,6 +536,9 @@ class Handler(BaseHTTPRequestHandler):
 
         if path == "/":
             body = _board_page().encode()
+            ctype = "text/html; charset=utf-8"
+        elif path == "/guide":
+            body = _guide_page().encode()
             ctype = "text/html; charset=utf-8"
         elif path == "/api/v1":
             body = _swagger_page("1").encode()
