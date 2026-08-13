@@ -18,9 +18,9 @@ python scoreboard.py
 
 | URL | What you get |
 |---|---|
-| `http://localhost:8080` | Live scoreboard — click any row to expand per-check detail |
-| `http://localhost:8080/api/v1` | Swagger UI for the Orders API v1 spec |
-| `http://localhost:8080/api/v2` | Swagger UI for the Orders API v2 spec |
+| `http://localhost:8081` | Live scoreboard — click any row to expand per-check detail |
+| `http://localhost:8081/api/v1` | Swagger UI for the Orders API v1 spec |
+| `http://localhost:8081/api/v2` | Swagger UI for the Orders API v2 spec |
 
 `score.py` also writes `report.html` in the project folder after every run — open it in any browser for a visual breakdown of every check. Pass `--open` to open it automatically.
 
@@ -45,7 +45,7 @@ python score.py --all
 python scoreboard.py
 ```
 
-That updates `scoreboard.json` for every team folder and writes per-team reports under `reports/`. The live page at http://localhost:8080 shows the full ranking for the room.
+That updates `scoreboard.json` for every team folder and writes per-team reports under `reports/`. The live page at http://localhost:8081 shows the full ranking for the room.
 
 Score one submission file without copying into the kit:
 

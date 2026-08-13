@@ -126,7 +126,7 @@ Team runs:
             v
   +---------------------------+
   |  Scoreboard updates live  |  <-- visible on screen for the whole room
-  |  http://localhost:8080    |
+  |  http://localhost:8081    |
   +---------------------------+
             |
             v
@@ -136,7 +136,7 @@ Team runs:
 ```
 
 Teams can run the scorer as many times as they like. The scoreboard shows
-the latest score for each team and auto-refreshes every five seconds.
+the latest score for each team and auto-refreshes every ten seconds.
 
 There is also a visual HTML report for each run that shows exactly which
 checks passed and which failed, with a short explanation of what went wrong.
@@ -156,7 +156,7 @@ Facilitator screen (projected)
 |  3 | Team Gamma  |  45   | 10 15 10 10    |
 |                                            |
 |  (click any row for per-check detail)      |
-|  (refreshes every 5 seconds)               |
+|  (refreshes every 10 seconds)              |
 +--------------------------------------------+
 
 Each team's laptop
