@@ -19,14 +19,40 @@ LEVEL_META = {
 def _nav(active: str = "/") -> str:
     links = [("/", "Scoreboard"), ("/guide", "Getting Started"), ("/api/v1", "API v1"), ("/api/v2", "API v2")]
     items = "".join(
-        f'<a href="{href}"{"  class=\"active\"" if href == active else ""}>{label}</a>'
+        f'<a data-path="{href}"{" class=\"active\"" if href == active else ""}>{label}</a>'
         for href, label in links
+    )
+    # navBase() detects the app's URL prefix regardless of how it is served:
+    #   direct localhost:8081 → base = "/"
+    #   nginx /scoreboard/ prefix → base = "/scoreboard/"
+    #   VS Code /proxy/8081/ forwarding → base = "/proxy/8081/"
+    # It strips any known page suffix from the path to find the root.
+    fix = (
+        "<script>"
+        "function navBase(){"
+        "var p=window.location.pathname;"
+        "var K=['/guide','/api/v1','/api/v2'];"
+        "for(var i=0;i<K.length;i++){"
+        "if(p.slice(-K[i].length)===K[i])"
+        "return p.slice(0,p.length-K[i].length+1)||'/';"
+        "}"
+        "return p.endsWith('/')?p:p+'/';"
+        "}"
+        "(function(){"
+        "var b=navBase();"
+        "document.querySelectorAll('nav a[data-path]').forEach(function(a){"
+        "var dp=a.getAttribute('data-path');"
+        "a.href=dp==='/'?b:b+dp.slice(1);"
+        "});"
+        "})();"
+        "</script>"
     )
     return (
         '<nav>'
         '<span class="brand">API Hackathon</span>'
         f'{items}'
         '</nav>'
+        + fix
     )
 
 _NAV_CSS = """
@@ -70,7 +96,7 @@ def _swagger_page(version: str) -> str:
   <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
   <script>
     SwaggerUIBundle({{
-      url: "/spec/v{version}.json",
+      url: navBase()+"spec/v{version}.json",
       dom_id: "#swagger-ui",
       presets: [SwaggerUIBundle.presets.apis, SwaggerUIBundle.SwaggerUIStandalonePreset],
       layout: "BaseLayout",
