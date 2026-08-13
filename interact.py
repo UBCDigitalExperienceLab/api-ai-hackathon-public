@@ -209,28 +209,32 @@ def chat_loop(client, level_num, level_name, source_data, fixture_findings, part
       int (1-4)  switch directly to that level
     """
     fixture_json = json.dumps(fixture_findings, indent=2)
-    code_section = (
-        f"The participant's current implementation for this level:\n```python\n{participant_code}\n```\n\n"
-        if participant_code else
-        "The participant has not yet written any implementation for this level.\n\n"
-    )
-    system = (
-        f"You are a concise coding assistant for an API hackathon. "
-        f"The hackathon has 4 levels the participant can access in any order:\n"
-        f"  Level 1 — Contract review (20 pts)\n"
-        f"  Level 2 — Negative tests (25 pts)\n"
-        f"  Level 3 — Incident response (30 pts)\n"
-        f"  Level 4 — Migration review (25 pts)\n\n"
-        f"The participant is currently on Level {level_num}: {level_name}. "
-        f"They can type a level number (1-4) at any time to switch levels.\n\n"
-        f"The AI produced these findings for Level {level_num} (some may be hallucinations):\n{fixture_json}\n\n"
-        f"The authoritative source data is:\n{source_data}\n\n"
-        f"{code_section}"
-        "Help the developer understand the findings, spot hallucinations, and improve "
-        "their verification code in workshop.py. Give specific feedback on their implementation "
-        "when it is shown above. Be brief and practical. "
-        "Never directly name which item is the hallucination — guide them to find it themselves."
-    )
+
+    def build_system():
+        code = get_level_source(level_num)
+        code_section = (
+            f"The participant's current implementation for this level:\n```python\n{code}\n```\n\n"
+            if code else
+            "The participant has not yet written any implementation for this level.\n\n"
+        )
+        return (
+            f"You are a concise coding assistant for an API hackathon. "
+            f"The hackathon has 4 levels the participant can access in any order:\n"
+            f"  Level 1 — Contract review (20 pts)\n"
+            f"  Level 2 — Negative tests (25 pts)\n"
+            f"  Level 3 — Incident response (30 pts)\n"
+            f"  Level 4 — Migration review (25 pts)\n\n"
+            f"The participant is currently on Level {level_num}: {level_name}. "
+            f"They can type a level number (1-4) at any time to switch levels.\n\n"
+            f"The AI produced these findings for Level {level_num} (some may be hallucinations):\n{fixture_json}\n\n"
+            f"The authoritative source data is:\n{source_data}\n\n"
+            f"{code_section}"
+            "Help the developer understand the findings, spot hallucinations, and improve "
+            "their verification code in workshop.py. Give specific feedback on their implementation "
+            "when it is shown above. Be brief and practical. "
+            "Never directly name which item is the hallucination — guide them to find it themselves."
+        )
+
     conversation = []
 
     print(f"\n{'─' * 60}")
@@ -265,7 +269,7 @@ def chat_loop(client, level_num, level_name, source_data, fixture_findings, part
             "content": [{"text": user_input}],
         })
         print("\nAI: ", end="", flush=True)
-        reply = stream(client, system, conversation)
+        reply = stream(client, build_system(), conversation)
         conversation.append({
             "role": "assistant",
             "content": [{"text": reply}],
@@ -279,9 +283,8 @@ def run_level(client, level_num):
     impl_status = get_implementation_status()
     show_level_status(impl_status, level_num)
     task_key, source_data, fixture_findings = load_level_data(level_num)
-    participant_code = get_level_source(level_num)
     show_findings(client, level_num, level_name, fixture_findings)
-    return chat_loop(client, level_num, level_name, source_data, fixture_findings, participant_code)
+    return chat_loop(client, level_num, level_name, source_data, fixture_findings, None)
 
 
 def main():
