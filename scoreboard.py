@@ -455,74 +455,88 @@ def review_contract(spec: dict, ai) -> list[dict]:
   ]},
 ];
 
-let cur=0, busy=false, stop=false, tid=null;
+let cur=0, gen=0;
 
 function mkProg(){
-  const el=document.getElementById("prog");
-  el.innerHTML=S.map((_,i)=>`<div class="dot" id="d${i}"></div>`).join("")+
-    '<span class="prog-label" id="pl"></span>';
+  var el=document.getElementById("prog");
+  var dots="";
+  for(var i=0;i<S.length;i++) dots+='<div class="dot" id="d'+i+'"></div>';
+  el.innerHTML=dots+'<span class="prog-label" id="pl"></span>';
 }
 function updProg(){
-  S.forEach((_,i)=>{
-    const d=document.getElementById("d"+i);
+  for(var i=0;i<S.length;i++){
+    var d=document.getElementById("d"+i);
     d.className="dot"+(i<cur?" done":i===cur?" active":"");
-  });
+  }
   document.getElementById("pl").textContent="Step "+(cur+1)+" of "+S.length;
   document.getElementById("sc").textContent=(cur+1)+" / "+S.length;
 }
 function setNav(ok){
-  document.getElementById("bprev").disabled=cur===0;
+  document.getElementById("bprev").disabled=(cur===0);
   document.getElementById("bnext").disabled=!ok;
   document.getElementById("bnext").textContent=cur===S.length-1?"Done ✓":"Next →";
 }
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function sleep(ms){return new Promise(r=>{tid=setTimeout(r,ms);});}
 
-async function animStep(idx){
-  stop=false; busy=true; setNav(false);
-  const term=document.getElementById("term");
+function showStep(idx){
+  gen++;
+  var myGen=gen;
+  var s=S[idx];
+  document.getElementById("stitle").textContent=s.title;
+  document.getElementById("shint").textContent=s.hint;
+  setNav(false);
+  var term=document.getElementById("term");
   term.innerHTML="";
-  const cur_el=document.createElement("span");
-  cur_el.className="cursor"; term.appendChild(cur_el);
-  document.getElementById("stitle").textContent=S[idx].title;
-  document.getElementById("shint").textContent=S[idx].hint;
-  for(const ln of S[idx].lines){
-    if(stop) break;
-    if(ln.k==="cmd"||ln.k==="inp"||ln.k==="you"){
-      const row=document.createElement("div");
-      const label=ln.k==="you"?"You: ":"$ ";
-      row.innerHTML=`<span class="p">${esc(label)}</span><span class="c" id="tt"></span>`;
-      term.insertBefore(row,cur_el);
-      const tt=row.querySelector("#tt"); tt.id="";
-      const spd=ln.k==="cmd"?14:28;
-      for(let i=0;i<=ln.v.length;i++){
-        if(stop) break;
-        tt.textContent=ln.v.slice(0,i);
-        await sleep(spd);
-      }
-      await sleep(160);
-    } else {
-      await sleep(100);
-      const row=document.createElement("div");
-      row.className="o"; row.textContent=ln.v;
-      term.insertBefore(row,cur_el);
-      term.scrollTop=term.scrollHeight;
-      await sleep(180);
-    }
-  }
-  busy=false; setNav(true); updProg();
+  var cursor=document.createElement("span");
+  cursor.className="cursor";
+  term.appendChild(cursor);
+  updProg();
+  runLine(s.lines,0,term,cursor,myGen);
 }
+
+function runLine(lines,i,term,cursor,myGen){
+  if(myGen!==gen) return;
+  if(i>=lines.length){ setNav(true); return; }
+  var ln=lines[i];
+  function next(){ runLine(lines,i+1,term,cursor,myGen); }
+  if(ln.k==="cmd"||ln.k==="inp"||ln.k==="you"){
+    var row=document.createElement("div");
+    var lbl=ln.k==="you"?"You: ":"$ ";
+    row.innerHTML='<span class="p">'+esc(lbl)+'</span><span class="c"></span>';
+    term.insertBefore(row,cursor);
+    var tt=row.querySelector(".c");
+    var spd=ln.k==="cmd"?14:28;
+    typeChars(tt,ln.v,0,spd,myGen,function(){ setTimeout(next,140); });
+  } else {
+    setTimeout(function(){
+      if(myGen!==gen) return;
+      var row=document.createElement("div");
+      row.className="o"; row.textContent=ln.v;
+      term.insertBefore(row,cursor);
+      term.scrollTop=term.scrollHeight;
+      setTimeout(next,150);
+    },80);
+  }
+}
+
+function typeChars(el,text,i,speed,myGen,done){
+  if(myGen!==gen) return;
+  el.textContent=text.slice(0,i);
+  if(i>=text.length){ done(); return; }
+  setTimeout(function(){ typeChars(el,text,i+1,speed,myGen,done); },speed);
+}
+
 function go(dir){
   if(dir>0&&cur===S.length-1) return;
-  stop=true; if(tid) clearTimeout(tid);
+  if(dir<0&&cur===0) return;
   cur=Math.max(0,Math.min(S.length-1,cur+dir));
-  updProg(); setTimeout(()=>animStep(cur),60);
+  showStep(cur);
 }
-document.addEventListener("keydown",e=>{
+document.addEventListener("keydown",function(e){
   if(e.key==="ArrowRight"||e.key==="Enter") go(1);
   if(e.key==="ArrowLeft") go(-1);
 });
-mkProg(); updProg(); setNav(false); animStep(0);
+mkProg(); showStep(0);
 </script>
 </body>
 </html>"""
@@ -578,7 +592,12 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print("Scoreboard:  http://localhost:8080")
-    print("API v1 docs: http://localhost:8080/api/v1")
-    print("API v2 docs: http://localhost:8080/api/v2")
-    ThreadingHTTPServer(("0.0.0.0", 8080), Handler).serve_forever()
+    import argparse as _ap
+    _p = _ap.ArgumentParser()
+    _p.add_argument("--port", type=int, default=8081)
+    _port = _p.parse_args().port
+    print(f"Scoreboard:      http://localhost:{_port}")
+    print(f"Getting started: http://localhost:{_port}/guide")
+    print(f"API v1 docs:     http://localhost:{_port}/api/v1")
+    print(f"API v2 docs:     http://localhost:{_port}/api/v2")
+    ThreadingHTTPServer(("0.0.0.0", _port), Handler).serve_forever()
