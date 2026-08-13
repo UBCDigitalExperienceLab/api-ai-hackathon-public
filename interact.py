@@ -92,6 +92,25 @@ def get_implementation_status():
     return status
 
 
+def get_level_source(level_num):
+    """Return the participant's current source for this level's function(s), or None."""
+    try:
+        with open("api_hackathon/workshop.py") as f:
+            source = f.read()
+    except OSError:
+        return None
+
+    parts = []
+    for func_name, _ in LEVEL_FUNCTIONS.get(level_num, []):
+        func_start = source.find(f"def {func_name}(")
+        if func_start == -1:
+            continue
+        next_func = source.find("\ndef ", func_start + 1)
+        body = source[func_start:next_func] if next_func != -1 else source[func_start:]
+        parts.append(body.strip())
+    return "\n\n".join(parts) if parts else None
+
+
 def show_menu(impl_status):
     started_total = sum(1 for v in impl_status.values() if v)
     total_funcs = len(impl_status)
@@ -181,7 +200,7 @@ def show_findings(client, level_num, level_name, fixture_findings):
     return stream(client, system, messages)
 
 
-def chat_loop(client, level_num, level_name, source_data, fixture_findings):
+def chat_loop(client, level_num, level_name, source_data, fixture_findings, participant_code):
     """
     Free-form chat about a level.
 
@@ -190,6 +209,11 @@ def chat_loop(client, level_num, level_name, source_data, fixture_findings):
       int (1-4)  switch directly to that level
     """
     fixture_json = json.dumps(fixture_findings, indent=2)
+    code_section = (
+        f"The participant's current implementation for this level:\n```python\n{participant_code}\n```\n\n"
+        if participant_code else
+        "The participant has not yet written any implementation for this level.\n\n"
+    )
     system = (
         f"You are a concise coding assistant for an API hackathon. "
         f"The hackathon has 4 levels the participant can access in any order:\n"
@@ -201,8 +225,10 @@ def chat_loop(client, level_num, level_name, source_data, fixture_findings):
         f"They can type a level number (1-4) at any time to switch levels.\n\n"
         f"The AI produced these findings for Level {level_num} (some may be hallucinations):\n{fixture_json}\n\n"
         f"The authoritative source data is:\n{source_data}\n\n"
-        "Help the developer understand the findings, spot hallucinations, and write "
-        "Python verification code for workshop.py. Be brief and practical. "
+        f"{code_section}"
+        "Help the developer understand the findings, spot hallucinations, and improve "
+        "their verification code in workshop.py. Give specific feedback on their implementation "
+        "when it is shown above. Be brief and practical. "
         "Never directly name which item is the hallucination — guide them to find it themselves."
     )
     conversation = []
@@ -253,8 +279,9 @@ def run_level(client, level_num):
     impl_status = get_implementation_status()
     show_level_status(impl_status, level_num)
     task_key, source_data, fixture_findings = load_level_data(level_num)
+    participant_code = get_level_source(level_num)
     show_findings(client, level_num, level_name, fixture_findings)
-    return chat_loop(client, level_num, level_name, source_data, fixture_findings)
+    return chat_loop(client, level_num, level_name, source_data, fixture_findings, participant_code)
 
 
 def main():
