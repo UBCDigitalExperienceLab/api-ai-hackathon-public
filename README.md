@@ -1,80 +1,65 @@
-# API AI Hackathon
+# API AI Workshop
 
-A compact, account-free hackathon for API practitioners who are new to AI.
+A workshop for API practitioners who are new to AI.
 
-Participants receive a working but unreliable implementation in `api_hackathon/workshop.py`. They improve it across four levels by filtering unsupported AI output, protecting API data, and verifying recommendations against deterministic evidence.
+Participants receive a working but unreliable implementation in `api_hackathon/workshop.py`. They improve it across four levels by filtering unsupported AI output and verifying recommendations against deterministic evidence.
 
-The default `FixtureAI` uses pre-generated responses, including deliberate hallucinations. No network, API key, or paid account is required. Ollama is optional.
+The default `FixtureAI` uses pre-generated responses, including deliberate hallucinations. Scoring always uses those fixtures so every team gets the same inputs. Amazon Bedrock is optional for exploration via `interact.py`.
+
+**Dry-run participants:** do not open or use `api_hackathon/reference_solution.py`. It is a facilitator file. Looking at it will spoil the workshop if you want a genuine experience later.
 
 ## Quick start
 
-Requires Python 3.10+ and no third-party packages.
+Requires Python 3.10+. `interact.py` also needs `boto3` and Workshop Studio credentials.
 
 ```powershell
-python demo.py
-python score.py --team "Team One"
+pip install boto3
 python scoreboard.py
+```
+
+Then, with Studio credentials set in the same terminal:
+
+```powershell
+python interact.py
+python score.py --team "Team One" --open
 ```
 
 | URL | What you get |
 |---|---|
-| `http://localhost:8081` | Live scoreboard — click any row to expand per-check detail |
-| `http://localhost:8081/api/v1` | Swagger UI for the Orders API v1 spec |
-| `http://localhost:8081/api/v2` | Swagger UI for the Orders API v2 spec |
+| `http://localhost:8081/guide` | Getting Started — activity walkthrough (Guide tab) |
+| `http://localhost:8081` | Progress page — click any row for per-check detail |
+| `http://localhost:8081/api/v1` | Swagger UI for the Orders API v1 spec (reference only) |
+| `http://localhost:8081/api/v2` | Swagger UI for the Orders API v2 spec (reference only) |
 
-`score.py` also writes `report.html` in the project folder after every run — open it in any browser for a visual breakdown of every check. Pass `--open` to open it automatically.
+The Orders API is not running. Use Swagger to see which endpoints exist. "Try it out" will return 404.
 
-```powershell
-python score.py --team "Team One" --open
-```
+`score.py` writes `report.html` after every run. Pass `--open` to open it automatically.
 
-### Score every team (facilitator)
+## Dry-run setup
 
-Collect each team's `workshop.py` into `submissions/<Team Name>/`:
+1. Join Workshop Studio with the event join link (no access code to type).
+2. The AWS environment is available **Friday 21 August, 3:00 pm to Monday 24 August, 3:00 pm (Pacific)**. Studio CLI credentials last for that same window.
+3. One teammate forks this repo. Everyone clones **the fork**, not this upstream repo. Replace `YOUR-ORG` with the fork owner's GitHub name, or copy the URL from the fork's green **Code** button.
+4. Studio VS Code is single-user. Edit on your own machine if needed. Download VS Code from https://code.visualstudio.com/download if you do not have it.
+5. Share Studio CLI credentials so everyone can run activity scripts that call Bedrock (`interact.py`). Do not commit credentials.
+6. On a personal machine you do not need `source /environment/.venv/bin/activate` — that path exists only in Studio. Use Python 3.10+ and `pip install boto3`.
 
-```text
-submissions/
-  Team Alpha/workshop.py
-  Team Beta/workshop.py
-```
+Work on `main`. Push only `api_hackathon/workshop.py`.
 
-Then score them all onto the shared board:
+## How to work each level
 
-```powershell
-python score.py --all
-python scoreboard.py
-```
+1. Run `python interact.py` and pick a level. Ask follow-up questions; the assistant will not give away the answer.
+2. Use the Guide tab at `http://localhost:8081/guide` as the on-screen activity script.
+3. Edit the matching function in `api_hackathon/workshop.py`.
+4. Run `python score.py --team "Your Team"` to check progress.
 
-That updates `scoreboard.json` for every team folder and writes per-team reports under `reports/`. The live page at http://localhost:8081 shows the full ranking for the room.
-
-Score one submission file without copying into the kit:
+Facilitators review the latest `workshop.py` on the team fork.
 
 ```powershell
 python score.py --team "Team Alpha" --file "path\to\their\workshop.py"
 ```
 
-Run the solved version:
-
-```powershell
-python demo.py --solution
-python score.py --team "Reference" --impl solution
-python -m unittest discover
-```
-
-Optional real AI via Amazon Bedrock (requires AWS credentials):
-
-```powershell
-python demo.py --bedrock
-```
-
-Optional local AI:
-
-```powershell
-ollama pull llama3.2
-python demo.py --ollama
-```
-
-The scored workshop remains fixture-based so every team receives identical inputs.
+Or collect files into `submissions/<Team Name>/workshop.py` and run `python score.py --all`.
 
 ## Four levels
 
@@ -85,32 +70,20 @@ The scored workshop remains fixture-based so every team receives identical input
 | 3 | Verify a production incident diagnosis against the actual log file | 30 |
 | 4 | Verify breaking API changes across two contracts | 25 |
 
-Teams edit only `api_hackathon/workshop.py`. The reference is in `api_hackathon/reference_solution.py`.
-
-## Suggested 3-hour session
-
-- 25 min: AI basics, context, hallucinations, structured output, data safety
-- 20 min: guided Level 1 walkthrough
-- 80 min: team levels
-- 20 min: adversarial peer review
-- 25 min: demonstrations and recognition
-- 10 min: lessons and reusable workplace practices
-
-Use the scoreboard for energy, not speed. Give recognition for strongest verification, best AI-failure detection, most reusable workflow, and clearest demonstration.
+Teams edit only `api_hackathon/workshop.py`. See `TASKS.md` for the checks on each level.
 
 ## Project map
 
 ```text
-api_hackathon/workshop.py           participant implementation
-api_hackathon/reference_solution.py solved example
+api_hackathon/workshop.py           participant implementation — the only file to edit
 api_hackathon/ai.py                 fixture AI + Bedrock + optional Ollama adapters
 data/                               synthetic specs, logs, and AI responses
-submissions/                        one folder per team for batch scoring
-score.py                            automated 100-point scoring (+ --all)
-scoreboard.py                       dependency-free local scoreboard (refreshes every 10 s)
+interact.py                         interactive assistant (Bedrock)
+score.py                            progress checks (always uses FixtureAI)
+scoreboard.py                       local progress page + Guide + Swagger (port 8081)
 demo.py                             run every level and print raw AI output
-interact.py                         interactive AI assistant with per-level chat (Bedrock)
-tests/                              kit verification
+TASKS.md                            level descriptions and tips
+docs/online-session-slides.pdf      dry-run session slides
 ```
 
 All artifacts are synthetic. Do not replace them with production payloads, credentials, or confidential logs during the event.

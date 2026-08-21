@@ -2,7 +2,12 @@
 
 AI output is untrusted input. Your job is not to produce more output; it is to make the output useful and defensible.
 
-Edit `api_hackathon/workshop.py`. Run `python score.py --team "Your team"` after each level.
+1. Open the Guide tab at `http://localhost:8081/guide` (after `python scoreboard.py`).
+2. Explore a level with `python interact.py`.
+3. Edit `api_hackathon/workshop.py`.
+4. Check progress with `python score.py --team "Your team"`.
+
+Do not open `api_hackathon/reference_solution.py`.
 
 ## Level 1 — Contract reviewer
 
@@ -24,6 +29,6 @@ Compare API v1 and v2. Verify removed operations and newly required parameters. 
 
 1. Show one unreliable baseline result.
 2. Explain your verification approach.
-3. Run the scorer.
+3. Run the progress check.
 4. Show one AI mistake your code catches.
 5. State where this pattern could help in daily API work.

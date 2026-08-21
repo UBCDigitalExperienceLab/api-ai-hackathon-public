@@ -358,10 +358,14 @@ _GUIDE_TEMPLATE = """<!doctype html>
 <script>
 const S=[
   {title:"1 — Set up your environment",
-   hint:"Activate the Python virtual environment once per terminal session before running any commands.",
+   hint:"In AWS Workshop Studio, activate the pre-built venv (that path only exists there). On your own machine you do not need it — use Python 3.10+ and install boto3. A local venv is optional.",
    lines:[
+    {k:"out",v:"# AWS Workshop Studio only"},
     {k:"cmd",v:"source /environment/.venv/bin/activate"},
     {k:"cmd",v:"cd /environment/api-ai-hackathon-public"},
+    {k:"out",v:"# Personal machine — clone of the team fork"},
+    {k:"cmd",v:"cd api-ai-hackathon-public"},
+    {k:"cmd",v:"pip install boto3"},
   ]},
   {title:"2 — Start the interactive assistant",
    hint:"python interact.py opens an AI-powered menu. It shows which functions you have started and lets you explore each level with real AI feedback.",

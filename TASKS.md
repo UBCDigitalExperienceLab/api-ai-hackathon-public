@@ -3,9 +3,12 @@
 AI output is untrusted input. Your job is not to produce more output; it is to make the output useful and defensible.
 
 **Workflow:**
-1. Run `python interact.py` to explore a level, see AI findings, and ask follow-up questions.
-2. Edit `api_hackathon/workshop.py` to add verification logic for that level.
-3. Run `python score.py --team "Your team"` to check your score.
+1. Start the progress page with `python scoreboard.py`, then open the Guide tab at `http://localhost:8081/guide`.
+2. Run `python interact.py` to explore a level and ask follow-up questions.
+3. Edit `api_hackathon/workshop.py` to add verification logic for that level.
+4. Run `python score.py --team "Your team"` to check your progress.
+
+Do not open `api_hackathon/reference_solution.py`. Work only in `workshop.py`.
 
 ---
 
@@ -69,7 +72,7 @@ Verify each claimed change by diffing the two specs directly:
 
 Every level follows the same pattern: AI produces output, your code verifies it against deterministic
 evidence, filter out the unverifiable claims. The fixture AI is fixed; the verification logic is what
-teams write and what gets scored.
+teams write and what the progress checks evaluate.
 
 ---
 
@@ -77,6 +80,6 @@ teams write and what gets scored.
 
 1. Show one unreliable baseline result
 2. Explain your verification approach
-3. Run the scorer
+3. Run the progress check
 4. Show one AI mistake your code catches
 5. State where this pattern could help in daily API work
