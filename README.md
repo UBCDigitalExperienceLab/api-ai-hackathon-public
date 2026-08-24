@@ -43,6 +43,14 @@ Then run the scoreboard
 ```
 python scoreboard.py
 ```
+Then you can load the Workshop materials:
+
+| URL | What you get |
+|---|---|
+| `http://localhost:8081/guide` | Getting Started — activity walkthrough (Guide tab) |
+| `http://localhost:8081` | Progress page — click any row for per-check detail |
+| `http://localhost:8081/api/v1` | Swagger UI for the Orders API v1 spec (reference only) |
+| `http://localhost:8081/api/v2` | Swagger UI for the Orders API v2 spec (reference only) |
 
 # Workshop Studio Credentials
 
@@ -72,12 +80,6 @@ python interact.py
 python score.py --team "Your team name" --open
 ```
 
-| URL | What you get |
-|---|---|
-| `http://localhost:8081/guide` | Getting Started — activity walkthrough (Guide tab) |
-| `http://localhost:8081` | Progress page — click any row for per-check detail |
-| `http://localhost:8081/api/v1` | Swagger UI for the Orders API v1 spec (reference only) |
-| `http://localhost:8081/api/v2` | Swagger UI for the Orders API v2 spec (reference only) |
 
 The Orders API is not running. Use Swagger to see which endpoints exist. "Try it out" will return 404.
 
