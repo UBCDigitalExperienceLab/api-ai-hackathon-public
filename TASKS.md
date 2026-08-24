@@ -48,7 +48,7 @@ verbatim in `incident.log`. The other references log lines that do not exist any
 
 Return only the diagnosis where every item in its `evidence` array appears literally in the log text.
 
-**Starter code behaviour:** blindly picks `[0]` from the AI diagnosis list.
+**Starter code behaviour:** blindly picks `[0]` from the AI diagnosis list, which is the unsupported DNS claim.
 
 ---
 

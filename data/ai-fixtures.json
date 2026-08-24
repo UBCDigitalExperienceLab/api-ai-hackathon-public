@@ -37,6 +37,10 @@
   ],
   "incident_diagnosis": [
     {
+      "cause": "A DNS outage prevented all clients from reaching the API.",
+      "evidence": ["dns_resolution_failed", "upstream_host_not_found"]
+    },
+    {
       "cause": "The 2.4.1 database-pool change exhausted all 20 connections and caused 503 responses.",
       "evidence": [
         "deploy version=2.4.1 change=orders-db-pool",
@@ -44,10 +48,6 @@
         "status=503 error=db_pool_timeout",
         "rollback version=2.4.0"
       ]
-    },
-    {
-      "cause": "A DNS outage prevented all clients from reaching the API.",
-      "evidence": ["dns_resolution_failed", "upstream_host_not_found"]
     }
   ],
   "migration_review": [

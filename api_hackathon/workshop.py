@@ -88,16 +88,16 @@ def diagnose_incident(logs: str, ai) -> dict:
     ai.ask("incident_diagnosis", logs) returns a list of candidates:
         [
           {
+            "cause": "A DNS outage prevented all clients from reaching the API.",
+            "evidence": ["dns_resolution_failed", "upstream_host_not_found"]
+          },
+          {
             "cause": "The 2.4.1 database-pool change exhausted connections.",
             "evidence": [
               "deploy version=2.4.1 change=orders-db-pool",
               "db_pool_wait_ms=1850 active=20 max=20",
               "status=503 error=db_pool_timeout"
             ]
-          },
-          {
-            "cause": "A DNS outage prevented all clients from reaching the API.",
-            "evidence": ["dns_resolution_failed", "upstream_host_not_found"]
           }
         ]
 
@@ -105,7 +105,7 @@ def diagnose_incident(logs: str, ai) -> dict:
     appears literally somewhere inside the logs string.
     The log file is at  data/incident.log  -- open it to see what is there.
     """
-    return ai.ask("incident_diagnosis", logs)[0]   # [0] is a lucky guess; fix it
+    return ai.ask("incident_diagnosis", logs)[0]   # [0] is unverified; fix it
 
 
 def review_migration(v1: dict, v2: dict, ai) -> list[dict]:

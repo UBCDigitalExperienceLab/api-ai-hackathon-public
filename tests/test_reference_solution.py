@@ -20,9 +20,10 @@ class HackathonKitTests(unittest.TestCase):
         )
 
     def test_starter_has_room_to_improve(self):
-        score, _ = calculate(workshop)
+        score, levels, _ = calculate(workshop)
         self.assertLess(score, 100)
         self.assertGreater(score, 0)
+        self.assertEqual(levels["L3 Incident diagnosis"], 0)
 
 
 if __name__ == "__main__":
