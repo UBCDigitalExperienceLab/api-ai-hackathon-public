@@ -4,3 +4,6 @@ reports/
 report.html
 scoreboard.json
 submissions/*/
+.vscode/
+.venv/
+uv.lock

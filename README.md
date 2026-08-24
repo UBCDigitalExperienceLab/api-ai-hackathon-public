@@ -12,16 +12,64 @@ The default `FixtureAI` uses pre-generated responses, including deliberate hallu
 
 Requires Python 3.10+. `interact.py` also needs `boto3` and Workshop Studio credentials.
 
-```powershell
-pip install boto3
+### Using uv (uv provides a standardized Python environment and installs the required dependencies.) 
+
+If you don't have `uv`, [install it](https://docs.astral.sh/uv/getting-started/installation/).
+
+For PowerShell:
+```
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+For macOS:
+```
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Set up the Python environment and dependencies:
+
+run
+```
+    uv sync
+```
+
+Then run:
+```
+.venv\Scripts\Activate.ps1   
+```
+now you should see a virtual environmment (api-ai-hackathon-public)
+
+Then run the scoreboard
+```
 python scoreboard.py
 ```
 
-Then, with Studio credentials set in the same terminal:
+# Workshop Studio Credentials
+
+To use `interact.py`, set your Workshop Studio credentials in the same terminal.
+
+Set environment variable:
+For PowerShell:
+```
+$Env:AWS_DEFAULT_REGION="xx-xxxx-x"
+$Env:AWS_ACCESS_KEY_ID="xxxxxxxxxxxxxxxxxxxxxxx"
+$Env:AWS_SECRET_ACCESS_KEY="xxxxxxxxxxxxxxxxxxxxxxx"
+$Env:AWS_SESSION_TOKEN="xxxxxxxxxxxx..........xxxxxxxxxxxxxx"
+```
+
+For macOS:
+```
+export AWS_DEFAULT_REGION="xx-xxxx-x"
+export AWS_ACCESS_KEY_ID="xxxxxxxxxxxxxxxxxxxxxxx"
+export AWS_SECRET_ACCESS_KEY="xxxxxxxxxxxxxxxxxxxxxxx"
+export AWS_SESSION_TOKEN="xxxxxxxxxxxx..........xxxxxxxxxxxxxx"
+```
+
+Then, with Studio credentials set in the same terminal, start the interactive process:
 
 ```powershell
 python interact.py
-python score.py --team "Team One" --open
+python score.py --team "Your team name" --open
 ```
 
 | URL | What you get |
