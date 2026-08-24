@@ -7,7 +7,7 @@ Quick start
 3. Run  python score.py --team "Your Team" --open   to see your score and a
    visual report in the browser.
 
-The API being reviewed has three endpoints (see http://localhost:8080/api/v1):
+The API being reviewed has three endpoints (see http://localhost:8081/api/v1):
 
     GET  /orders               list orders, optional ?limit=<int>
     POST /orders               create an order  (Bearer auth required)

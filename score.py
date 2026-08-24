@@ -166,7 +166,7 @@ def _report_html(team: str, score: int, levels: dict, checks: list, ts: str) -> 
 </head>
 <body>
   <div class="wrap">
-    <a class="back" href="http://localhost:8080">← Scoreboard</a>
+    <a class="back" href="http://localhost:8081">← Progress page</a>
     <header>
       <div class="label">Score Report</div>
       <div class="tname">{_html.escape(team)}</div>
@@ -318,7 +318,7 @@ def main() -> None:
             for team, err in errors:
                 print(f"  {team}: {err}")
         print(f"\nScoreboard file → {BOARD.resolve()}")
-        print("Refresh http://localhost:8080 to see all teams.")
+        print("Refresh http://localhost:8081 to see all teams.")
         return
 
     module = resolve_module(args.impl, args.file)

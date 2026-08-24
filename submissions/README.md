@@ -20,6 +20,6 @@ python score.py --team "Team Alpha" --file "submissions/Team Alpha/workshop.py"
 python scoreboard.py
 ```
 
-Open http://localhost:8080 — every scored team appears, ranked by total points. Click a row for per-check detail.
+Open http://localhost:8081 — every scored team appears. Click a row for per-check detail.
 
 Folder names become team names on the board. Folders starting with `.` or `_` are ignored.
