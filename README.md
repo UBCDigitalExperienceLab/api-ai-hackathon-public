@@ -54,7 +54,7 @@ Then you can load the Workshop materials:
 
 # Workshop Studio Credentials
 
-To use `interact.py`, set your Workshop Studio credentials in the same terminal.
+Open a new terminal, to use `interact.py`, set your Workshop Studio credentials.
 
 Set environment variable:
 For PowerShell:
