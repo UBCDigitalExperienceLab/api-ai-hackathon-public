@@ -146,7 +146,6 @@ Skip these until you have scored at least once. They are not a second starting p
 | File | Who it is for |
 |---|---|
 | `TASKS.md` | Extra tips and the exact keep/drop rules for each level |
-| `CHALLENGES.md` | A short restatement of the same four levels |
 | `OVERVIEW.md` | Decision-makers who want the workshop rationale |
 
 ## Project map
