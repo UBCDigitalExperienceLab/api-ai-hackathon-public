@@ -60,6 +60,14 @@ source .venv/bin/activate
 
 After it is active, `python` and `pip` use the isolated environment. `interact.py` still needs Workshop Studio credentials in that same terminal.
 
+To persist Studio credentials inside this venv (so you do not re-export them every session), set the three AWS variables in the current terminal, then run:
+
+```powershell
+python scripts/pin_aws_creds.py
+```
+
+That appends the values to `.venv`'s activate script. Do not commit `.venv`.
+
 ```powershell
 python scoreboard.py
 ```
