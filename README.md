@@ -14,6 +14,14 @@ The default `FixtureAI` uses pre-generated responses, including deliberate hallu
 
 You are the reviewer on a small Orders API team. A teammate pasted AI output into a review, a test plan, an incident thread, and a migration note. If one invented endpoint or fake log line slips through, people debug a problem that never existed. Keep `ai.ask(...)` — that is the untrusted draft — and return only what you can prove from the spec or the log.
 
+How that shows up in this workshop:
+
+- **Level 1** — the model invents `DELETE /customers`, which is not in the OpenAPI spec.
+- **Level 3** — the model cites log lines such as `dns_resolution_failed` that never appear in `data/incident.log`.
+- **Level 4** — the model claims `orderId` changed from integer to string when both contracts define it the same way.
+
+A related real-world case: AI-generated code can be syntactically valid and still be wrong because it ignores the team's framework conventions. Same habit applies — check the output against an authoritative source.
+
 ## First 10 minutes
 
 Do these in order. When you finish, you have a running progress page and a first score.
