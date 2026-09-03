@@ -30,8 +30,8 @@ Do these in order. When you finish, you have a running progress page and a first
 2. Create an isolated environment with uv (see Install below) so workshop packages do not land in your global Python.
 3. From the repo root, run `python scoreboard.py` and leave that terminal open.
 4. Open `http://localhost:8081/guide` — that is the on-screen activity script.
-5. In a second terminal, run `python score.py --team "Your Team" --open`. You should see about 55/100 on the unmodified starter.
-6. Optional: run `python interact.py` if you have Workshop Studio credentials. Scoring does not need it.
+5. Open a second terminal, activate `.venv` again (see Install), then run `python score.py --team "Your Team" --open`. You should see about 55/100 on the unmodified starter.
+6. Optional: run `python interact.py` if you have Workshop Studio credentials. Scoring does not need it. Activate `.venv` in that terminal first.
 
 You are ready to edit Level 1 in `api_hackathon/workshop.py`.
 
@@ -58,7 +58,7 @@ uv venv
 uv sync
 ```
 
-Activate the venv in each new terminal:
+Activate the venv in **each new terminal**. A second window does not inherit the first one.
 
 ```powershell
 # Windows
@@ -70,9 +70,27 @@ Activate the venv in each new terminal:
 source .venv/bin/activate
 ```
 
-After it is active, `python` and `pip` use the isolated environment. `interact.py` still needs Workshop Studio credentials in that same terminal.
+The prompt should show `(.venv)`. After that, `python` and `pip` use the isolated environment and will not install packages globally.
 
-To persist Studio credentials inside this venv (so you do not re-export them every session), set the three AWS variables in the current terminal, then run:
+`interact.py` still needs Workshop Studio credentials in that same terminal. Paste them from Studio's **Get AWS CLI credentials** panel:
+
+```powershell
+# Windows (PowerShell)
+$Env:AWS_DEFAULT_REGION="us-east-1"
+$Env:AWS_ACCESS_KEY_ID="..."
+$Env:AWS_SECRET_ACCESS_KEY="..."
+$Env:AWS_SESSION_TOKEN="..."
+```
+
+```bash
+# macOS / Linux
+export AWS_DEFAULT_REGION="us-east-1"
+export AWS_ACCESS_KEY_ID="..."
+export AWS_SECRET_ACCESS_KEY="..."
+export AWS_SESSION_TOKEN="..."
+```
+
+To persist those values inside this venv (so you do not re-export them every session), run:
 
 ```powershell
 python scripts/pin_aws_creds.py
