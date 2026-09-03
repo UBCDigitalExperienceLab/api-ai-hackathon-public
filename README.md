@@ -10,6 +10,19 @@ The default `FixtureAI` uses pre-generated responses, including deliberate hallu
 
 **Dry-run participants:** do not open or use `api_hackathon/reference_solution.py`. It is a facilitator file. Looking at it will spoil the workshop if you want a genuine experience later.
 
+## First 10 minutes
+
+Do these in order. When you finish, you have a running progress page and a first score.
+
+1. Confirm Python 3.10+ (`python --version`). Install it first if it is missing.
+2. Install dependencies with `pip install boto3`.
+3. From the repo root, run `python scoreboard.py` and leave that terminal open.
+4. Open `http://localhost:8081/guide` — that is the on-screen activity script.
+5. In a second terminal, run `python score.py --team "Your Team" --open`. You should see about 55/100 on the unmodified starter.
+6. Optional: run `python interact.py` if you have Workshop Studio credentials. Scoring does not need it.
+
+You are ready to edit Level 1 in `api_hackathon/workshop.py`.
+
 ## Quick start
 
 Requires Python 3.10+. `interact.py` also needs `boto3` and Workshop Studio credentials.
