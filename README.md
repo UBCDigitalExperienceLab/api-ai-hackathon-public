@@ -2,7 +2,7 @@
 
 **Start here.** This README is the only entry point for the workshop. Open it first, then follow Quick start. Other markdown files are optional extras — you do not need them to begin.
 
-A workshop for API practitioners who are new to AI.
+A workshop for API practitioners. Best if you already use AI for coding; the new skill is verification, not prompting.
 
 Participants receive a working but unreliable implementation in `api_hackathon/workshop.py`. They improve it across four levels by filtering unsupported AI output and verifying recommendations against deterministic evidence.
 
