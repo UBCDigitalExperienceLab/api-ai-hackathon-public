@@ -124,7 +124,29 @@ The Orders API is not running. Use Swagger to see which endpoints exist. "Try it
 
 1. Join Workshop Studio with the event join link (no access code to type).
 2. The AWS environment is available **Friday 21 August, 3:00 pm to Monday 24 August, 3:00 pm (Pacific)**. Studio CLI credentials last for that same window.
-3. One teammate forks this repo. Everyone clones **the fork**, not this upstream repo. Replace `YOUR-ORG` with the fork owner's GitHub name, or copy the URL from the fork's green **Code** button.
+3. One teammate forks this repo. Everyone clones **the fork**, not this upstream repo.
+
+**One person — create the fork** (GitHub UI: open the repo and click Fork, or use the CLI):
+
+```powershell
+gh repo fork UBCDigitalExperienceLab/api-ai-hackathon-public --clone=false
+```
+
+That creates `https://github.com/YOUR-ORG/api-ai-hackathon-public` where `YOUR-ORG` is **your GitHub username**. Invite teammates: Settings → Collaborators.
+
+**Everyone — clone the fork** (replace `YOUR-ORG` with the fork owner's GitHub name, or copy the URL from the fork's green **Code** button):
+
+```powershell
+git clone https://github.com/YOUR-ORG/api-ai-hackathon-public.git
+cd api-ai-hackathon-public
+```
+
+To clone into a different folder:
+
+```powershell
+git clone https://github.com/YOUR-ORG/api-ai-hackathon-public.git C:\path\to\your-team-folder
+cd C:\path\to\your-team-folder
+```
 4. Studio VS Code is single-user. Edit on your own machine if needed. Download VS Code from https://code.visualstudio.com/download if you do not have it.
 5. Share Studio CLI credentials so everyone can run activity scripts that call Bedrock (`interact.py`). Do not commit credentials.
 6. On a personal machine you do not need `source /environment/.venv/bin/activate` — that path exists only in Studio. Use `uv venv` and `uv sync` from **Install** above.

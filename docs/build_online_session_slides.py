@@ -369,13 +369,27 @@ def build(path):
         leading=20,
     )
     y -= 6
+    y = wrap(
+        c,
+        "One person: click Fork on GitHub, or run this (YOUR-ORG becomes your GitHub username):",
+        0.7 * inch,
+        y,
+        12 * inch,
+        size=13,
+        leading=18,
+    )
+    y = code_block(
+        c,
+        ["gh repo fork UBCDigitalExperienceLab/api-ai-hackathon-public --clone=false"],
+        0.7 * inch,
+        y,
+        12 * inch,
+    )
     y = numbered(
         c,
         [
-            "Open github.com/UBCDigitalExperienceLab/api-ai-hackathon-public",
-            "Click Fork and create it under your GitHub account",
             "Invite every teammate as a collaborator (Settings → Collaborators)",
-            "Share the fork URL with the team and with facilitators at the end",
+            "Share https://github.com/YOUR-ORG/api-ai-hackathon-public with the team and facilitators",
         ],
         0.7 * inch,
         y,
@@ -436,6 +450,10 @@ def build(path):
             "# Replace YOUR-ORG with the fork owner's GitHub name",
             "git clone https://github.com/YOUR-ORG/api-ai-hackathon-public.git",
             "cd api-ai-hackathon-public",
+            "",
+            "# Or clone into a folder you choose",
+            "git clone https://github.com/YOUR-ORG/api-ai-hackathon-public.git C:\\path\\to\\your-team-folder",
+            "cd C:\\path\\to\\your-team-folder",
         ],
         0.7 * inch,
         y,
