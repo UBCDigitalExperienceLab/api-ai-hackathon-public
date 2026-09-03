@@ -14,8 +14,8 @@ The default `FixtureAI` uses pre-generated responses, including deliberate hallu
 
 Do these in order. When you finish, you have a running progress page and a first score.
 
-1. Confirm Python 3.10+ (`python --version`). Install it first if it is missing.
-2. Install dependencies with `pip install boto3`.
+1. Confirm Python 3.10+ (`python --version`). If Python is missing, install it from https://www.python.org/downloads/ and reopen the terminal.
+2. Create an isolated environment with uv (see Install below) so workshop packages do not land in your global Python.
 3. From the repo root, run `python scoreboard.py` and leave that terminal open.
 4. Open `http://localhost:8081/guide` — that is the on-screen activity script.
 5. In a second terminal, run `python score.py --team "Your Team" --open`. You should see about 55/100 on the unmodified starter.
@@ -23,12 +23,44 @@ Do these in order. When you finish, you have a running progress page and a first
 
 You are ready to edit Level 1 in `api_hackathon/workshop.py`.
 
-## Quick start
+## Install (uv)
 
-Requires Python 3.10+. `interact.py` also needs `boto3` and Workshop Studio credentials.
+Use [uv](https://docs.astral.sh/uv/) so dependencies stay inside `.venv` and do not clutter your global environment.
+
+If you do not have uv yet:
 
 ```powershell
-pip install boto3
+# Windows (PowerShell)
+irm https://astral.sh/uv/install.ps1 | iex
+```
+
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then, from the repo root:
+
+```powershell
+uv venv
+uv sync
+```
+
+Activate the venv in each new terminal:
+
+```powershell
+# Windows
+.\.venv\Scripts\Activate.ps1
+```
+
+```bash
+# macOS / Linux
+source .venv/bin/activate
+```
+
+After it is active, `python` and `pip` use the isolated environment. `interact.py` still needs Workshop Studio credentials in that same terminal.
+
+```powershell
 python scoreboard.py
 ```
 
@@ -57,7 +89,7 @@ The Orders API is not running. Use Swagger to see which endpoints exist. "Try it
 3. One teammate forks this repo. Everyone clones **the fork**, not this upstream repo. Replace `YOUR-ORG` with the fork owner's GitHub name, or copy the URL from the fork's green **Code** button.
 4. Studio VS Code is single-user. Edit on your own machine if needed. Download VS Code from https://code.visualstudio.com/download if you do not have it.
 5. Share Studio CLI credentials so everyone can run activity scripts that call Bedrock (`interact.py`). Do not commit credentials.
-6. On a personal machine you do not need `source /environment/.venv/bin/activate` — that path exists only in Studio. Use Python 3.10+ and `pip install boto3`.
+6. On a personal machine you do not need `source /environment/.venv/bin/activate` — that path exists only in Studio. Use `uv venv` and `uv sync` from **Install** above.
 
 Work on `main`. Push only `api_hackathon/workshop.py`.
 
@@ -107,6 +139,7 @@ data/                               synthetic specs, logs, and AI responses
 interact.py                         interactive assistant (Bedrock)
 score.py                            progress checks (always uses FixtureAI)
 scoreboard.py                       local progress page + Guide + Swagger (port 8081)
+pyproject.toml                      uv dependencies (boto3)
 demo.py                             run every level and print raw AI output
 TASKS.md                            optional level descriptions and tips
 docs/online-session-slides.pdf      dry-run session slides

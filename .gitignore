@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
+.venv/
 reports/
 report.html
 scoreboard.json
