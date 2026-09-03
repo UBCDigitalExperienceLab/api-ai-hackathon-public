@@ -20,7 +20,9 @@ The AI returns 4 OpenAPI findings. One is made up -- it claims `DELETE /customer
 
 Keep only findings where:
 1. The `path` and `method` actually exist in the spec
-2. The `evidence_pointer` (a JSON Pointer like `/paths/~1orders/get`) resolves to a real location in the spec
+2. The `evidence_pointer` (a JSON Pointer like `/paths/~1orders/get`) resolves to a real location in the spec.
+   Split the pointer on `/` first, then decode `~1` to `/` **inside that key**.
+   `/paths/~1orders/get` means `spec["paths"]["/orders"]["get"]`, not `//orders`.
 
 **Tip:** open `http://localhost:8081/api/v1` to browse the real spec in Swagger UI — it shows exactly which paths and methods exist. The API is not running, so "Try it out" won't work; use the spec as a reference only.
 

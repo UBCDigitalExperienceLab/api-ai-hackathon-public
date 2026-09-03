@@ -47,8 +47,9 @@ def review_contract(spec: dict, ai) -> list[dict]:
     Tip: check two things for each finding before keeping it.
       1. Does spec["paths"][finding["path"]][finding["method"]] exist?
       2. Does the evidence_pointer resolve to a real location inside spec?
-         A JSON Pointer like "/paths/~1orders/get" means
-         spec["paths"]["/orders"]["get"]  (the ~1 decodes to a forward slash).
+         JSON Pointer: split on "/" first, then decode ~1 to "/" inside a key.
+         "/paths/~1orders/get" is spec["paths"]["/orders"]["get"].
+         It is not "//orders" -- the slash belongs to the key name "/orders".
     """
     return ai.ask("contract_review", spec)
 
