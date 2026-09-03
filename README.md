@@ -1,5 +1,7 @@
 # API AI Workshop
 
+**Start here.** This README is the only entry point for the workshop. Open it first, then follow Quick start. Other markdown files are optional extras — you do not need them to begin.
+
 A workshop for API practitioners who are new to AI.
 
 Participants receive a working but unreliable implementation in `api_hackathon/workshop.py`. They improve it across four levels by filtering unsupported AI output and verifying recommendations against deterministic evidence.
@@ -70,11 +72,22 @@ Or collect files into `submissions/<Team Name>/workshop.py` and run `python scor
 | 3 | Verify a production incident diagnosis against the actual log file | 30 |
 | 4 | Verify breaking API changes across two contracts | 25 |
 
-Teams edit only `api_hackathon/workshop.py`. See `TASKS.md` for the checks on each level.
+Teams edit only `api_hackathon/workshop.py`. Level-by-level checks live in `TASKS.md` if you want more detail after you start.
+
+## Other documents (optional)
+
+Skip these until you have scored at least once. They are not a second starting point.
+
+| File | Who it is for |
+|---|---|
+| `TASKS.md` | Extra tips and the exact keep/drop rules for each level |
+| `CHALLENGES.md` | A short restatement of the same four levels |
+| `OVERVIEW.md` | Decision-makers who want the workshop rationale |
 
 ## Project map
 
 ```text
+README.md                           start here
 api_hackathon/workshop.py           participant implementation — the only file to edit
 api_hackathon/ai.py                 fixture AI + Bedrock + optional Ollama adapters
 data/                               synthetic specs, logs, and AI responses
@@ -82,7 +95,7 @@ interact.py                         interactive assistant (Bedrock)
 score.py                            progress checks (always uses FixtureAI)
 scoreboard.py                       local progress page + Guide + Swagger (port 8081)
 demo.py                             run every level and print raw AI output
-TASKS.md                            level descriptions and tips
+TASKS.md                            optional level descriptions and tips
 docs/online-session-slides.pdf      dry-run session slides
 ```
 

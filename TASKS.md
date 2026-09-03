@@ -1,5 +1,7 @@
 # Workshop Tasks
 
+Start with `README.md`. This file is optional extra detail for each level.
+
 AI output is untrusted input. Your job is not to produce more output; it is to make the output useful and defensible.
 
 **Workflow:**

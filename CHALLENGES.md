@@ -1,5 +1,7 @@
 # Participant brief
 
+Start with `README.md`. This file is a short restatement of the same four levels.
+
 AI output is untrusted input. Your job is not to produce more output; it is to make the output useful and defensible.
 
 1. Open the Guide tab at `http://localhost:8081/guide` (after `python scoreboard.py`).

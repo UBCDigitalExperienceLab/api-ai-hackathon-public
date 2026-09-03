@@ -1,5 +1,7 @@
 # API AI Workshop -- Overview for Decision Makers
 
+Participants should start with `README.md`. This document is for decision makers.
+
 This document explains what the workshop is, why it matters, and how it runs.
 No technical background is needed to read this.
 
