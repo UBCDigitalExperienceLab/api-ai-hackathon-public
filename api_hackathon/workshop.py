@@ -81,7 +81,7 @@ def design_negative_tests(spec: dict, ai) -> list[dict]:
 
     Tip: keep a test case only if ALL of these are true.
       1. spec["paths"][case["path"]][case["method"]] exists.
-      2. expected_status is a real client-error code (400, 401, 403, 404, etc.).
+      2. expected_status is one of 400, 401, 403, 404, 409, or 422.
          A 204 from a non-existent endpoint is a red flag.
       3. The case has all required fields: name, method, path, input,
          expected_status.

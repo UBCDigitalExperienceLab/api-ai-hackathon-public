@@ -36,7 +36,7 @@ The AI proposes 4 negative test cases. One targets a route that does not exist i
 
 Keep only test cases where:
 1. The `path` and `method` exist in the spec
-2. The `expected_status` is a plausible error code (4xx range)
+2. The `expected_status` is one of `400`, `401`, `403`, `404`, `409`, or `422`
 3. Every case has the required fields: `name`, `method`, `path`, `input`, `expected_status`
 
 **Tip:** open `http://localhost:8081/api/v1` to see which routes exist before deciding which test cases are targeting real endpoints. The API is not running, so "Try it out" won't work; use the spec as a reference only.
