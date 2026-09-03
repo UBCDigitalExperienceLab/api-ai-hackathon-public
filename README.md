@@ -10,6 +10,10 @@ The default `FixtureAI` uses pre-generated responses, including deliberate hallu
 
 **Dry-run participants:** do not open or use `api_hackathon/reference_solution.py`. It is a facilitator file. Looking at it will spoil the workshop if you want a genuine experience later.
 
+## Why this job exists
+
+You are the reviewer on a small Orders API team. A teammate pasted AI output into a review, a test plan, an incident thread, and a migration note. If one invented endpoint or fake log line slips through, people debug a problem that never existed. Keep `ai.ask(...)` — that is the untrusted draft — and return only what you can prove from the spec or the log.
+
 ## First 10 minutes
 
 Do these in order. When you finish, you have a running progress page and a first score.
