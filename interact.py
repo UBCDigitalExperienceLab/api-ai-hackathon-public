@@ -10,13 +10,22 @@ number (1-4) at any time to jump to another level.
 
 import importlib
 import json
+import os
 import sys
 
 import boto3
+from botocore.exceptions import BotoCoreError, ClientError, NoCredentialsError
 
 from api_hackathon.artifacts import load_json, load_text
 
 MODEL_ID = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+AWS_AUTH_HELP = (
+    "AWS authentication failed because the security token has expired or is not "
+    "configured correctly. Please verify your AWS credentials and ensure the "
+    "required environment variables (for example, AWS_ACCESS_KEY_ID, "
+    "AWS_SECRET_ACCESS_KEY, and AWS_SESSION_TOKEN) are set and up to date."
+)
+REQUIRED_AWS_VARS = ("AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN")
 
 LEVELS = [
     (1, "Contract review",    20, "contract_review",   "L1"),
@@ -144,13 +153,30 @@ def show_level_status(impl_status, level_num):
     print()
 
 
+def _require_aws_credentials() -> None:
+    missing = [name for name in REQUIRED_AWS_VARS if not os.environ.get(name)]
+    if missing:
+        print(AWS_AUTH_HELP)
+        print("Missing: " + ", ".join(missing))
+        sys.exit(1)
+
+
+def _exit_on_aws_error(exc: Exception) -> None:
+    print(AWS_AUTH_HELP)
+    print(f"({type(exc).__name__})")
+    sys.exit(1)
+
+
 def stream(client, system_text, messages):
     """Stream a Bedrock response and return the full text."""
-    response = client.converse_stream(
-        modelId=MODEL_ID,
-        system=[{"text": system_text}],
-        messages=messages,
-    )
+    try:
+        response = client.converse_stream(
+            modelId=MODEL_ID,
+            system=[{"text": system_text}],
+            messages=messages,
+        )
+    except (BotoCoreError, ClientError, NoCredentialsError) as exc:
+        _exit_on_aws_error(exc)
     full_text = ""
     for event in response["stream"]:
         if "contentBlockDelta" in event:
@@ -288,7 +314,11 @@ def run_level(client, level_num):
 
 
 def main():
-    client = boto3.client("bedrock-runtime", region_name="us-east-1")
+    _require_aws_credentials()
+    try:
+        client = boto3.client("bedrock-runtime", region_name="us-east-1")
+    except (BotoCoreError, ClientError, NoCredentialsError) as exc:
+        _exit_on_aws_error(exc)
     destination = "menu"
 
     while True:
