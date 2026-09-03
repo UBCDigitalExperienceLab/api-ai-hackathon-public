@@ -41,6 +41,9 @@ def review_contract(spec: dict, ai) -> list[dict]:
           }
         ]
 
+    Compare each finding against the OpenAPI v1 document in
+    data/openapi-v1.json (same spec as http://localhost:8081/api/v1).
+
     Tip: check two things for each finding before keeping it.
       1. Does spec["paths"][finding["path"]][finding["method"]] exist?
       2. Does the evidence_pointer resolve to a real location inside spec?
@@ -71,6 +74,9 @@ def design_negative_tests(spec: dict, ai) -> list[dict]:
             "expected_status": 204
           }
         ]
+
+    Compare each test case against the OpenAPI v1 document in
+    data/openapi-v1.json (same spec as http://localhost:8081/api/v1).
 
     Tip: keep a test case only if ALL of these are true.
       1. spec["paths"][case["path"]][case["method"]] exists.
@@ -137,6 +143,9 @@ def review_migration(v1: dict, v2: dict, ai) -> list[dict]:
             "parameter": "orderId"
           }
         ]
+
+    Compare each claim against data/openapi-v1.json and data/openapi-v2.json
+    (Swagger: http://localhost:8081/api/v1 and http://localhost:8081/api/v2).
 
     Verify each change by comparing v1 and v2 directly.
       "operation_removed"       -- operation exists in v1 but not in v2.
