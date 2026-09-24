@@ -34,7 +34,7 @@ Do these in order. When you finish, you have a running progress page and a first
 1. Confirm Python 3.10+ (`python --version`). If Python is missing, install it from https://www.python.org/downloads/ and reopen the terminal.
 2. Create an isolated environment with uv (see Install below) so workshop packages do not land in your global Python.
 3. From the repo root, run `python scoreboard.py` and leave that terminal open.
-4. Open `http://localhost:8081/guide` — that is the on-screen activity script.
+4. Your browser opens the Guide at `http://localhost:8081` — that is the on-screen activity script. If it does not open, paste that URL into your browser.
 5. Open a second terminal, activate `.venv` again (see Install), then run `python score.py --team "Your Team" --open`. You should see about 55/100 on the unmodified starter.
 6. Optional: run `python interact.py` if you have Workshop Studio credentials. Scoring does not need it. Activate `.venv` in that terminal first.
 
@@ -116,8 +116,8 @@ python score.py --team "Team One" --open
 
 | URL | What you get |
 |---|---|
-| `http://localhost:8081/guide` | Getting Started — activity walkthrough (Guide tab) |
-| `http://localhost:8081` | Progress page — click any row for per-check detail |
+| `http://localhost:8081` | Getting Started — activity walkthrough (Guide tab, opens automatically) |
+| `http://localhost:8081/progress` | Progress page — click any row for per-check detail |
 | `http://localhost:8081/api/v1` | Swagger UI for the Orders API v1 spec (reference only) |
 | `http://localhost:8081/api/v2` | Swagger UI for the Orders API v2 spec (reference only) |
 
@@ -161,7 +161,7 @@ Work on `main`. Push only `api_hackathon/workshop.py`.
 ## How to work each level
 
 1. Run `python interact.py` and pick a level. Ask follow-up questions; the assistant will not give away the answer.
-2. Use the Guide tab at `http://localhost:8081/guide` as the on-screen activity script.
+2. Use the Guide tab at `http://localhost:8081` as the on-screen activity script.
 3. Edit the matching function in `api_hackathon/workshop.py`.
 4. Run `python score.py --team "Your Team"` to check progress.
 

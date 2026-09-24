@@ -17,7 +17,7 @@ LEVEL_META = {
 # ── Navigation bar (shared across pages) ─────────────────────────────────────
 
 def _nav(active: str = "/") -> str:
-    links = [("/", "Progress"), ("/guide", "Getting Started"), ("/api/v1", "API v1"), ("/api/v2", "API v2")]
+    links = [("/", "Getting Started"), ("/progress", "Progress"), ("/api/v1", "API v1"), ("/api/v2", "API v2")]
     items = "".join(
         f'<a data-path="{href}"{" class=\"active\"" if href == active else ""}>{label}</a>'
         for href, label in links
@@ -31,7 +31,7 @@ def _nav(active: str = "/") -> str:
         "<script>"
         "function navBase(){"
         "var p=window.location.pathname;"
-        "var K=['/guide','/api/v1','/api/v2'];"
+        "var K=['/guide','/progress','/api/v1','/api/v2'];"
         "for(var i=0;i<K.length;i++){"
         "if(p.slice(-K[i].length)===K[i])"
         "return p.slice(0,p.length-K[i].length+1)||'/';"
@@ -265,7 +265,7 @@ def _board_page() -> str:
   </script>
 </head>
 <body>
-  {_nav("/")}
+  {_nav("/progress")}
   <div class="wrap">
     <h1>Workshop Progress</h1>
     <p class="sub">Click any row to expand per-check detail. Auto-refreshes every 30 s.</p>
@@ -288,7 +288,7 @@ def _board_page() -> str:
 def _guide_page() -> str:
     # Uses placeholder substitution to avoid f-string brace escaping in CSS/JS.
     nav_css = _NAV_CSS
-    nav_bar = _nav("/guide")
+    nav_bar = _nav("/")
     return _GUIDE_TEMPLATE.replace("<<<NAV_CSS>>>", nav_css).replace("<<<NAV>>>", nav_bar)
 
 
@@ -583,11 +583,11 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = self.path.split("?")[0]
 
-        if path == "/":
-            body = _board_page().encode()
-            ctype = "text/html; charset=utf-8"
-        elif path == "/guide":
+        if path in ("/", "/guide"):
             body = _guide_page().encode()
+            ctype = "text/html; charset=utf-8"
+        elif path == "/progress":
+            body = _board_page().encode()
             ctype = "text/html; charset=utf-8"
         elif path == "/api/v1":
             body = _swagger_page("1").encode()
@@ -631,9 +631,15 @@ if __name__ == "__main__":
     import argparse as _ap
     _p = _ap.ArgumentParser()
     _p.add_argument("--port", type=int, default=8081)
-    _port = _p.parse_args().port
-    print(f"Scoreboard:      http://localhost:{_port}")
-    print(f"Getting started: http://localhost:{_port}/guide")
+    _p.add_argument("--no-browser", action="store_true",
+                    help="Do not open the Getting Started guide in a browser.")
+    _args = _p.parse_args()
+    _port = _args.port
+    print(f"Getting started: http://localhost:{_port}   <- open this first")
+    print(f"Progress:        http://localhost:{_port}/progress")
     print(f"API v1 docs:     http://localhost:{_port}/api/v1")
     print(f"API v2 docs:     http://localhost:{_port}/api/v2")
+    if not _args.no_browser:
+        import threading, webbrowser
+        threading.Timer(1.0, webbrowser.open, (f"http://localhost:{_port}",)).start()
     ThreadingHTTPServer(("0.0.0.0", _port), Handler).serve_forever()

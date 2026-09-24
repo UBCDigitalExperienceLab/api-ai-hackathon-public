@@ -517,7 +517,7 @@ def build(path):
     y = callout(
         c,
         "Activity instructions live on the Guide tab",
-        "After you start the progress page, open http://localhost:8081/guide. That Getting Started page walks through the activity: pick a level, ask the AI, edit workshop.py, then check your progress.",
+        "After you run python scoreboard.py, your browser opens http://localhost:8081. That Getting Started page walks through the activity: pick a level, ask the AI, edit workshop.py, then check your progress.",
         0.7 * inch,
         y,
         12 * inch,
@@ -550,8 +550,8 @@ def build(path):
     )
     y = code_block(c, ["python scoreboard.py"], 0.7 * inch, y, 12 * inch)
     urls = [
-        ("http://localhost:8081/guide", "Getting Started — activity instructions (Guide tab)"),
-        ("http://localhost:8081", "Progress page — updates every 5 seconds"),
+        ("http://localhost:8081", "Getting Started — opens automatically (Guide tab)"),
+        ("http://localhost:8081/progress", "Progress page — updates every 30 seconds"),
         ("http://localhost:8081/api/v1", "Orders API v1 spec in Swagger UI"),
         ("http://localhost:8081/api/v2", "Orders API v2 spec in Swagger UI"),
     ]
@@ -626,7 +626,7 @@ def build(path):
         ("python interact.py", "Explore any level with live AI guidance"),
         ('python score.py --team "Team Name"', "Check your workshop.py progress"),
         ("git push", "Share workshop.py on the team fork"),
-        ("python scoreboard.py", "Progress page at http://localhost:8081"),
+        ("python scoreboard.py", "Opens the Guide at http://localhost:8081"),
     ]
     for cmd, desc in cmds:
         card(c, 0.7 * inch, y - 62, 12 * inch, 58)
