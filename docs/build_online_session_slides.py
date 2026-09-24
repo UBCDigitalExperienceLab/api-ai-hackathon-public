@@ -171,7 +171,7 @@ def build(path):
     c.drawString(0.9 * inch, H - 2.85 * inch, "Online session")
     wrap(
         c,
-        "A 30-minute walkthrough: environment access, team fork, shared credentials, and the interactive assistant.",
+        "A one-hour walkthrough: environment access, team fork, shared credentials, and the interactive assistant.",
         0.9 * inch,
         H - 3.5 * inch,
         9 * inch,
@@ -181,23 +181,13 @@ def build(path):
     )
     wrap(
         c,
-        "AWS Workshop Studio environment is open Friday 21 August, 3:00 pm to Monday 24 August, 3:00 pm (Pacific).",
+        "Online session: Friday 2 October, 1:00–2:00 pm. In-person workshop: [IN-PERSON DATE], 9:00 am–12:00 pm (Pacific).",
         0.9 * inch,
         H - 4.2 * inch,
         9 * inch,
         size=14,
         color=TEXT,
         leading=20,
-    )
-    wrap(
-        c,
-        "Dry run: do not open api_hackathon/reference_solution.py if you want a genuine workshop experience later.",
-        0.9 * inch,
-        H - 4.85 * inch,
-        9 * inch,
-        size=13,
-        color=WARN,
-        leading=18,
     )
     footer(c, 1, total)
 
@@ -215,7 +205,7 @@ def build(path):
     )
     y = wrap(
         c,
-        "AWS environment window: Friday 21 August, 3:00 pm to Monday 24 August, 3:00 pm (Pacific).",
+        "AWS environment window: [ENVIRONMENT START] to [ENVIRONMENT END] (Pacific).",
         0.7 * inch,
         y - 4,
         12 * inch,
@@ -225,7 +215,7 @@ def build(path):
     stat_boxes(
         c,
         [
-            ("30 min", "Session length"),
+            ("60 min", "Session length"),
             ("4", "Workshop levels"),
             ("100 pts", "Workshop points"),
             ("1 file", "You edit: workshop.py"),
@@ -275,7 +265,7 @@ def build(path):
     y = heading(c, 2, "Access Workshop Studio")
     y = wrap(
         c,
-        "For this dry run, everyone joins the same Workshop Studio event with this link. You do not need to type an access code.",
+        "Everyone joins the same Workshop Studio event with the link your facilitator shares.",
         0.7 * inch,
         y,
         12 * inch,
@@ -284,7 +274,7 @@ def build(path):
     )
     y = code_block(
         c,
-        ["https://catalog.us-east-1.prod.workshops.aws/join?access-code=3c26-0d1d02-f5"],
+        ["[WORKSHOP STUDIO JOIN LINK]"],
         0.7 * inch,
         y,
         12 * inch,
@@ -312,7 +302,7 @@ def build(path):
     callout(
         c,
         "Environment window",
-        "The AWS Workshop Studio environment is available from Friday 21 August, 3:00 pm to Monday 24 August, 3:00 pm (Pacific). Credentials and Bedrock only work inside that window.",
+        "The AWS Workshop Studio environment is available from [ENVIRONMENT START] to [ENVIRONMENT END] (Pacific). Credentials and Bedrock only work inside that window.",
         0.7 * inch,
         y,
         12 * inch,
@@ -348,7 +338,7 @@ def build(path):
     callout(
         c,
         "Credentials last as long as the environment",
-        "The Studio CLI credentials stay valid for the environment window: Friday 21 August, 3:00 pm to Monday 24 August, 3:00 pm (Pacific). You do not need to refresh them during the dry run. Do not commit them to the fork.",
+        "The Studio CLI credentials stay valid for the environment window: [ENVIRONMENT START] to [ENVIRONMENT END] (Pacific). You do not need to refresh them during the workshop. Do not commit them to the fork.",
         0.7 * inch,
         y,
         12 * inch,
@@ -403,15 +393,6 @@ def build(path):
         0.7 * inch,
         y,
         12 * inch,
-    )
-    y = callout(
-        c,
-        "Dry run — do not open reference_solution.py",
-        "The repo includes api_hackathon/reference_solution.py. Do not open, copy, or use that file during the dry run — especially if you want a genuine workshop experience later. Work only in api_hackathon/workshop.py.",
-        0.7 * inch,
-        y,
-        12 * inch,
-        warn=True,
     )
     callout(
         c,
@@ -477,7 +458,7 @@ def build(path):
     callout(
         c,
         "Skip the Studio venv on your own machine",
-        "source /environment/.venv/bin/activate exists only inside AWS Workshop Studio. On a personal machine use Python 3.10+ and pip install boto3. A local venv is optional.",
+        "source /environment/.venv/bin/activate exists only inside AWS Workshop Studio. On a personal machine use Python 3.10+, then run uv venv and uv sync as the README shows.",
         0.7 * inch,
         y,
         12 * inch,
@@ -640,15 +621,6 @@ def build(path):
         size=14,
         color=SUB,
         leading=20,
-    )
-    y = callout(
-        c,
-        "Dry run — do not open reference_solution.py",
-        "Do not open or use api_hackathon/reference_solution.py. It is a facilitator file. Looking at it will spoil the workshop if you want to try the real experience later.",
-        0.7 * inch,
-        y,
-        12 * inch,
-        warn=True,
     )
     cmds = [
         ("python interact.py", "Explore any level with live AI guidance"),

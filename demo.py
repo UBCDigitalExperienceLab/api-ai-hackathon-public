@@ -8,14 +8,11 @@ from api_hackathon.artifacts import load_json, load_text
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run all four hackathon levels.")
-    parser.add_argument("--solution", action="store_true")
     parser.add_argument("--ollama", action="store_true")
     parser.add_argument("--bedrock", action="store_true")
     args = parser.parse_args()
 
-    module = importlib.import_module(
-        "api_hackathon.reference_solution" if args.solution else "api_hackathon.workshop"
-    )
+    module = importlib.import_module("api_hackathon.workshop")
     if args.ollama:
         ai = OllamaAI()
     elif args.bedrock:

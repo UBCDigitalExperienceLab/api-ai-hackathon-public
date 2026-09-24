@@ -156,8 +156,7 @@ Each teammate
 +--------------------------------------------+
 ```
 
-Teams share one fork of the public repo and hand in that URL. They must not
-open `reference_solution.py` if they want a genuine attempt.
+Teams share one fork of the public repo and hand in that URL.
 
 ---
 
@@ -177,10 +176,10 @@ open `reference_solution.py` if they want a genuine attempt.
 
 | Item | Detail |
 |---|---|
-| Format | Online setup session, then team work on the four levels |
+| Format | Online setup session (Friday 2 October, 1:00–2:00 pm Pacific), then an in-person workshop ([IN-PERSON DATE], 9:00 am–12:00 pm) |
 | Group size | Teams of 2-4 |
 | Prerequisites | Basic Python familiarity, no AI experience required |
-| Environment | AWS Workshop Studio (shared). Dry-run window: Friday 21 August, 3:00 pm to Monday 24 August, 3:00 pm (Pacific) |
+| Environment | AWS Workshop Studio (shared). Window: [ENVIRONMENT START] to [ENVIRONMENT END] (Pacific) |
 | Local editor | VS Code recommended if not using Studio VS Code (https://code.visualstudio.com/download) |
 | Software | Python 3.10+, boto3 for interact.py |
 | Facilitator effort | Share the join link, walk through setup, answer questions |

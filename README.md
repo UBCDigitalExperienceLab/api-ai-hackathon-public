@@ -8,8 +8,6 @@ Participants receive a working but unreliable implementation in `api_hackathon/w
 
 The default `FixtureAI` uses pre-generated responses, including deliberate hallucinations. Scoring always uses those fixtures so every team gets the same inputs. Amazon Bedrock is optional for exploration via `interact.py`.
 
-**Dry-run participants:** do not open or use `api_hackathon/reference_solution.py`. It is a facilitator file. Looking at it will spoil the workshop if you want a genuine experience later.
-
 ## Why this job exists
 
 You are the reviewer on a small Orders API team. A teammate pasted AI output into a review, a test plan, an incident thread, and a migration note. If one invented endpoint or fake log line slips through, people debug a problem that never existed. Keep `ai.ask(...)` — that is the untrusted draft — and return only what you can prove from the spec or the log.
@@ -120,10 +118,17 @@ The Orders API is not running. Use Swagger to see which endpoints exist. "Try it
 
 `score.py` writes `report.html` after every run. Pass `--open` to open it automatically.
 
-## Dry-run setup
+## Schedule
 
-1. Join Workshop Studio with the event join link (no access code to type).
-2. The AWS environment is available **Friday 21 August, 3:00 pm to Monday 24 August, 3:00 pm (Pacific)**. Studio CLI credentials last for that same window.
+| Session | When (Pacific) |
+|---|---|
+| Online setup session | **Friday 2 October, 1:00–2:00 pm** |
+| In-person workshop | **[IN-PERSON DATE], 9:00 am–12:00 pm** |
+
+## Team setup
+
+1. Join Workshop Studio with the join link your facilitator shares: **[WORKSHOP STUDIO JOIN LINK]**.
+2. The AWS environment is available **[ENVIRONMENT START] to [ENVIRONMENT END] (Pacific)**. Studio CLI credentials last for that same window.
 3. One teammate forks this repo. Everyone clones **the fork**, not this upstream repo.
 
 **One person — create the fork** (GitHub UI: open the repo and click Fork, or use the CLI):
@@ -201,7 +206,7 @@ scoreboard.py                       local progress page + Guide + Swagger (port 
 pyproject.toml                      uv dependencies (boto3)
 demo.py                             run every level and print raw AI output
 TASKS.md                            optional level descriptions and tips
-docs/online-session-slides.pdf      dry-run session slides
+docs/online-session-slides.pdf      online setup session slides
 ```
 
 All artifacts are synthetic. Do not replace them with production payloads, credentials, or confidential logs during the event.

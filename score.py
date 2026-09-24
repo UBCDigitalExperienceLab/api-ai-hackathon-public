@@ -199,12 +199,10 @@ def load_module(path: Path):
     return module
 
 
-def resolve_module(impl: str, file: Path | None):
+def resolve_module(file: Path | None):
     if file is not None:
         return load_module(file)
-    module_name = ("api_hackathon.workshop" if impl == "starter"
-                   else "api_hackathon.reference_solution")
-    return importlib.import_module(module_name)
+    return importlib.import_module("api_hackathon.workshop")
 
 
 def discover_submissions(root: Path) -> list[tuple[str, Path]]:
@@ -270,10 +268,8 @@ def main() -> None:
     )
     parser.add_argument("--team", default="Local team",
                         help="Team name for a single-run score (ignored with --all).")
-    parser.add_argument("--impl", choices=["starter", "solution"], default="starter",
-                        help="Score the local workshop or the facilitator reference.")
     parser.add_argument("--file", type=Path, default=None,
-                        help="Score a specific workshop.py instead of --impl.")
+                        help="Score a specific workshop.py instead of the local one.")
     parser.add_argument("--all", action="store_true",
                         help="Score every team under submissions/ and update the board.")
     parser.add_argument("--submissions", type=Path, default=SUBMISSIONS,
@@ -321,7 +317,7 @@ def main() -> None:
         print("Refresh http://localhost:8081 to see all teams.")
         return
 
-    module = resolve_module(args.impl, args.file)
+    module = resolve_module(args.file)
     score_one(args.team, module, REPORT)
 
     if args.open:

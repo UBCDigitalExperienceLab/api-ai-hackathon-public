@@ -1,6 +1,6 @@
 # Workshop Tasks
 
-Start with `README.md`. This file is optional extra detail for each level. It is the only level-by-level brief (the old `CHALLENGES.md` short card lived here).
+Start with `README.md`. This file is optional extra detail for each level. It is the only level-by-level brief.
 
 AI output is untrusted input. Your job is not to produce more output; it is to make the output useful and defensible.
 
@@ -10,7 +10,7 @@ AI output is untrusted input. Your job is not to produce more output; it is to m
 3. Edit `api_hackathon/workshop.py` to add verification logic for that level.
 4. Run `python score.py --team "Your team"` to check your progress.
 
-Do not open `api_hackathon/reference_solution.py`. Work only in `workshop.py`.
+Work only in `workshop.py`.
 
 ---
 

@@ -6,7 +6,6 @@ Drop each team's `workshop.py` here, then score everyone onto the shared board:
 submissions/
   Team Alpha/workshop.py
   Team Beta/workshop.py
-  Reference/workshop.py      ← optional facilitator copy
 ```
 
 ```powershell
