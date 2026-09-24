@@ -444,7 +444,7 @@ def build(path):
         ("workshop.py", "The only file you edit — push this to the fork"),
         ("interact.py", "Interactive AI assistant — start here"),
         ("score.py", "Run this to see your progress at any time"),
-        ("TASKS.md", "Level descriptions and tips"),
+        ("README.md", "Setup and the rules for each level"),
     ]
     for name, desc in files:
         c.setFillColor(ACCENT)

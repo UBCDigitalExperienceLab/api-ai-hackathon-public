@@ -1,12 +1,19 @@
 # API AI Workshop
 
-**Start here.** This README is the only entry point for the workshop. Open it first, then follow Quick start. Other markdown files are optional extras — you do not need them to begin.
+**Start here.** This README is the only entry point for the workshop. Open it first, then follow **First 10 minutes**.
 
 A workshop for API practitioners. Best if you already use AI for coding; the new skill is verification, not prompting.
 
 Participants receive a working but unreliable implementation in `api_hackathon/workshop.py`. They improve it across four levels by filtering unsupported AI output and verifying recommendations against deterministic evidence.
 
 The default `FixtureAI` uses pre-generated responses, including deliberate hallucinations. Scoring always uses those fixtures so every team gets the same inputs. Amazon Bedrock is optional for exploration via `interact.py`.
+
+## Schedule
+
+| Session | When (Pacific) |
+|---|---|
+| Online setup session | **Friday 2 October, 1:00–2:00 pm** |
+| In-person workshop | **Monday 5 October, 9:00 am–12:00 pm** |
 
 ## Why this job exists
 
@@ -118,13 +125,6 @@ The Orders API is not running. Use Swagger to see which endpoints exist. "Try it
 
 `score.py` writes `report.html` after every run. Pass `--open` to open it automatically.
 
-## Schedule
-
-| Session | When (Pacific) |
-|---|---|
-| Online setup session | **Friday 2 October, 1:00–2:00 pm** |
-| In-person workshop | **Monday 5 October, 9:00 am–12:00 pm** |
-
 ## Team setup
 
 1. Join Workshop Studio with the join link your facilitator shares: **[WORKSHOP STUDIO JOIN LINK]**.
@@ -182,16 +182,65 @@ Or collect files into `submissions/<Team Name>/workshop.py` and run `python scor
 | 3 | Verify a production incident diagnosis against the actual log file | 30 |
 | 4 | Verify breaking API changes across two contracts | 25 |
 
-Teams edit only `api_hackathon/workshop.py`. Level-by-level checks live in `TASKS.md` if you want more detail after you start.
+Every level follows the same pattern: the AI produces output, your code checks it against the spec or the log, and only proven results survive. Edit only `api_hackathon/workshop.py`.
 
-## Other documents (optional)
+### Level 1 - Filter Hallucinated Contract Findings (20 pts)
 
-Skip these until you have scored at least once. They are not a second starting point.
+The AI returns 4 OpenAPI findings. One is made up -- it claims `DELETE /customers` is publicly accessible, but that path does not exist in the spec at all.
 
-| File | Who it is for |
-|---|---|
-| `TASKS.md` | Extra tips and the exact keep/drop rules for each level |
-| `OVERVIEW.md` | Decision-makers who want the workshop rationale |
+Keep only findings where:
+1. The `path` and `method` actually exist in the spec
+2. The `evidence_pointer` (a JSON Pointer like `/paths/~1orders/get`) resolves to a real location in the spec.
+   Split the pointer on `/` first, then decode `~1` to `/` **inside that key**.
+   `/paths/~1orders/get` means `spec["paths"]["/orders"]["get"]`, not `//orders`.
+
+**Tip:** open `http://localhost:8081/api/v1` to browse the real spec in Swagger UI — it shows exactly which paths and methods exist. The API is not running, so "Try it out" won't work; use the spec as a reference only.
+
+**Starter code behaviour:** returns all 4 findings including the hallucination.
+
+### Level 2 - Filter Hallucinated Negative Tests (25 pts)
+
+The AI proposes 4 negative test cases. One targets a route that does not exist in v1.
+
+Keep only test cases where:
+1. The `path` and `method` exist in the spec
+2. The `expected_status` is one of `400`, `401`, `403`, `404`, `409`, or `422`
+3. Every case has the required fields: `name`, `method`, `path`, `input`, `expected_status`
+
+**Tip:** open `http://localhost:8081/api/v1` to see which routes exist before deciding which test cases are targeting real endpoints. The API is not running, so "Try it out" won't work; use the spec as a reference only.
+
+**Starter code behaviour:** returns all 4 tests including the invented one.
+
+### Level 3 - Incident Diagnosis (30 pts)
+
+The AI returns 2 candidate diagnoses for a production incident. One has evidence that appears
+verbatim in `incident.log`. The other references log lines that do not exist anywhere in the file.
+
+Return only the diagnosis where every item in its `evidence` array appears literally in the log text.
+
+**Starter code behaviour:** blindly picks `[0]` from the AI diagnosis list, which is the unsupported DNS claim.
+
+### Level 4 - Filter Hallucinated Breaking Changes (25 pts)
+
+The AI reports 3 breaking changes between v1 and v2. One is invented -- it claims a field changed
+type, but both specs define it identically.
+
+Verify each claimed change by diffing the two specs directly:
+- `operation_removed`: operation exists in v1, gone in v2 -- keep it
+- `parameter_became_required`: parameter is optional in v1, required in v2 -- keep it
+- `schema_changed`: schemas must actually differ between v1 and v2 -- if they are identical, reject the claim
+
+**Tip:** open `http://localhost:8081/api/v1` and `http://localhost:8081/api/v2` side by side to visually spot what changed before writing the diff logic. The API is not running, so "Try it out" won't work; use the specs as a reference only.
+
+**Starter code behaviour:** returns all 3 changes including the false one.
+
+## Five-minute demonstration
+
+1. Show one unreliable baseline result
+2. Explain your verification approach
+3. Run the progress check
+4. Show one AI mistake your code catches
+5. State where this pattern could help in daily API work
 
 ## Project map
 
@@ -205,7 +254,6 @@ score.py                            progress checks (always uses FixtureAI)
 scoreboard.py                       local progress page + Guide + Swagger (port 8081)
 pyproject.toml                      uv dependencies (boto3)
 demo.py                             run every level and print raw AI output
-TASKS.md                            optional level descriptions and tips
 docs/online-session-slides.pdf      online setup session slides
 ```
 
