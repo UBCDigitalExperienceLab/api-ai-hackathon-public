@@ -163,15 +163,15 @@ Work on `main`. Push only `api_hackathon/workshop.py`.
 1. Run `python interact.py` and pick a level. Ask follow-up questions; the assistant will not give away the answer.
 2. Use the Guide tab at `http://localhost:8081` as the on-screen activity script.
 3. Edit the matching function in `api_hackathon/workshop.py`.
-4. Run `python score.py --team "Your Team"` to check progress.
-
-Facilitators review the latest `workshop.py` on the team fork.
+4. Check your progress as often as you like:
 
 ```powershell
-python score.py --team "Team Alpha" --file "path\to\their\workshop.py"
+python score.py --team "Your Team" --open
 ```
 
-Or collect files into `submissions/<Team Name>/workshop.py` and run `python score.py --all`.
+This scores your local `workshop.py`, opens a per-check report in your browser, and adds your team to the Progress tab at `http://localhost:8081/progress`. Scoring is only for your own visibility. It does not rank teams.
+
+When you are done, push `api_hackathon/workshop.py` to your team fork. Facilitators review it there.
 
 ## Four levels
 
