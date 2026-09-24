@@ -123,12 +123,12 @@ The Orders API is not running. Use Swagger to see which endpoints exist. "Try it
 | Session | When (Pacific) |
 |---|---|
 | Online setup session | **Friday 2 October, 1:00–2:00 pm** |
-| In-person workshop | **[IN-PERSON DATE], 9:00 am–12:00 pm** |
+| In-person workshop | **Monday 5 October, 9:00 am–12:00 pm** |
 
 ## Team setup
 
 1. Join Workshop Studio with the join link your facilitator shares: **[WORKSHOP STUDIO JOIN LINK]**.
-2. The AWS environment is available **[ENVIRONMENT START] to [ENVIRONMENT END] (Pacific)**. Studio CLI credentials last for that same window.
+2. The AWS environment is available **Friday 2 October, 1:00 pm to Monday 5 October, 12:00 pm (Pacific)**. Studio CLI credentials last for that same window.
 3. One teammate forks this repo. Everyone clones **the fork**, not this upstream repo.
 
 **One person — create the fork** (GitHub UI: open the repo and click Fork, or use the CLI):

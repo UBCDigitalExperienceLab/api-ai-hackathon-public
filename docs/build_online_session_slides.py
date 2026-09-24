@@ -181,7 +181,7 @@ def build(path):
     )
     wrap(
         c,
-        "Online session: Friday 2 October, 1:00–2:00 pm. In-person workshop: [IN-PERSON DATE], 9:00 am–12:00 pm (Pacific).",
+        "Online session: Friday 2 October, 1:00–2:00 pm. In-person workshop: Monday 5 October, 9:00 am–12:00 pm (Pacific).",
         0.9 * inch,
         H - 4.2 * inch,
         9 * inch,
@@ -205,7 +205,7 @@ def build(path):
     )
     y = wrap(
         c,
-        "AWS environment window: [ENVIRONMENT START] to [ENVIRONMENT END] (Pacific).",
+        "AWS environment window: Friday 2 October, 1:00 pm to Monday 5 October, 12:00 pm (Pacific).",
         0.7 * inch,
         y - 4,
         12 * inch,
@@ -302,7 +302,7 @@ def build(path):
     callout(
         c,
         "Environment window",
-        "The AWS Workshop Studio environment is available from [ENVIRONMENT START] to [ENVIRONMENT END] (Pacific). Credentials and Bedrock only work inside that window.",
+        "The AWS Workshop Studio environment is available from Friday 2 October, 1:00 pm to Monday 5 October, 12:00 pm (Pacific). Credentials and Bedrock only work inside that window.",
         0.7 * inch,
         y,
         12 * inch,
@@ -338,7 +338,7 @@ def build(path):
     callout(
         c,
         "Credentials last as long as the environment",
-        "The Studio CLI credentials stay valid for the environment window: [ENVIRONMENT START] to [ENVIRONMENT END] (Pacific). You do not need to refresh them during the workshop. Do not commit them to the fork.",
+        "The Studio CLI credentials stay valid for the environment window: Friday 2 October, 1:00 pm to Monday 5 October, 12:00 pm (Pacific). You do not need to refresh them during the workshop. Do not commit them to the fork.",
         0.7 * inch,
         y,
         12 * inch,

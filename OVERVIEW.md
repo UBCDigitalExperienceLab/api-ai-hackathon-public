@@ -176,10 +176,10 @@ Teams share one fork of the public repo and hand in that URL.
 
 | Item | Detail |
 |---|---|
-| Format | Online setup session (Friday 2 October, 1:00–2:00 pm Pacific), then an in-person workshop ([IN-PERSON DATE], 9:00 am–12:00 pm) |
+| Format | Online setup session (Friday 2 October, 1:00–2:00 pm Pacific), then an in-person workshop (Monday 5 October, 9:00 am–12:00 pm) |
 | Group size | Teams of 2-4 |
 | Prerequisites | Basic Python familiarity, no AI experience required |
-| Environment | AWS Workshop Studio (shared). Window: [ENVIRONMENT START] to [ENVIRONMENT END] (Pacific) |
+| Environment | AWS Workshop Studio (shared). Window: Friday 2 October, 1:00 pm to Monday 5 October, 12:00 pm (Pacific) |
 | Local editor | VS Code recommended if not using Studio VS Code (https://code.visualstudio.com/download) |
 | Software | Python 3.10+, boto3 for interact.py |
 | Facilitator effort | Share the join link, walk through setup, answer questions |
