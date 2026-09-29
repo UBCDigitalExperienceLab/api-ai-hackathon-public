@@ -43,6 +43,22 @@ Do these in order. When you finish, you have a running progress page and a first
 
 You are ready to edit Level 1 in `api_hackathon/workshop.py`.
 
+## The workshop page
+
+`python scoreboard.py` starts a local page at `http://localhost:8081` and opens it in your browser. Keep it open while you work. It has four tabs:
+
+**Getting Started:** a step-by-step guide to the whole activity. Use the arrow keys or Next to move through it.
+
+<img src="docs/screenshots/guide.png" alt="Getting Started tab showing step 1 of 8, with the commands to set up the environment" width="700">
+
+**Progress:** your team's score for each level after every `score.py` run. Click a row for the detail of each check.
+
+<img src="docs/screenshots/progress.png" alt="Progress tab showing a team at 55% with a bar for each of the four levels" width="700">
+
+**API v1 and API v2:** the two Orders API specs in Swagger UI, so you can see which endpoints really exist.
+
+<img src="docs/screenshots/api.png" alt="API v1 tab showing the Orders API endpoints in Swagger UI" width="700">
+
 ## Install (uv)
 
 Use [uv](https://docs.astral.sh/uv/) so dependencies stay inside `.venv` and do not clutter your global environment.
