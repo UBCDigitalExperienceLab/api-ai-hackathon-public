@@ -6,9 +6,9 @@
 
 A workshop for API practitioners. Best if you already use AI for coding; the new skill is verification, not prompting.
 
-Participants receive a working but unreliable implementation in `api_hackathon/workshop.py`. They improve it across four levels by filtering unsupported AI output and verifying recommendations against deterministic evidence.
+You get a working but unreliable `api_hackathon/workshop.py`. Across four levels, you change it so only AI claims backed by the spec or the log survive.
 
-The default `FixtureAI` uses pre-generated responses, including deliberate hallucinations. Scoring always uses those fixtures so every team gets the same inputs. Amazon Bedrock is optional for exploration via `interact.py`.
+Scoring uses pre-recorded AI answers with deliberate mistakes, so every team gets the same inputs and nothing needs the internet. The optional AI tutor, `python interact.py`, uses a live model on Amazon Bedrock and needs your Workshop Studio credentials.
 
 ## Schedule
 
