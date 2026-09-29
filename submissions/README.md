@@ -9,14 +9,14 @@ submissions/
 ```
 
 ```powershell
-# Score every team folder and update scoreboard.json
+# Score every team folder and update portal.json
 python score.py --all
 
 # Or score one file by hand
 python score.py --team "Team Alpha" --file "submissions/Team Alpha/workshop.py"
 
 # Keep the live board open for the room
-python scoreboard.py
+python portal.py
 ```
 
 Open http://localhost:8081/progress — every scored team appears. Click a row for per-check detail.

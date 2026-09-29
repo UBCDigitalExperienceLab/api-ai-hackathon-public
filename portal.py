@@ -3,7 +3,7 @@ import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-BOARD = Path("scoreboard.json")
+BOARD = Path("portal.json")
 DATA = Path(__file__).parent / "data"
 
 LEVEL_META = {
@@ -24,7 +24,7 @@ def _nav(active: str = "/") -> str:
     )
     # navBase() detects the app's URL prefix regardless of how it is served:
     #   direct localhost:8081 → base = "/"
-    #   nginx /scoreboard/ prefix → base = "/scoreboard/"
+    #   nginx /portal/ prefix → base = "/portal/"
     #   VS Code /proxy/8081/ forwarding → base = "/proxy/8081/"
     # It strips any known page suffix from the path to find the root.
     fix = (
@@ -50,7 +50,7 @@ def _nav(active: str = "/") -> str:
     )
     return (
         '<nav>'
-        '<span class="brand">Workshop</span>'
+        '<span class="brand">Workshop Portal</span>'
         f'{items}'
         '</nav>'
         + fix
@@ -109,7 +109,7 @@ def _swagger_page(version: str) -> str:
 </html>"""
 
 
-# ── Scoreboard page ───────────────────────────────────────────────────────────
+# ── Progress page ─────────────────────────────────────────────────────────────
 
 def _board_page() -> str:
     entries = json.loads(BOARD.read_text()) if BOARD.exists() else []

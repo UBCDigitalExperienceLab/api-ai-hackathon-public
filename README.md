@@ -36,7 +36,7 @@ Do these in order. When you finish, you have a running progress page and a first
 
 1. Confirm Python 3.10+ (`python --version`). If Python is missing, install it from https://www.python.org/downloads/ and reopen the terminal.
 2. Create an isolated environment with uv (see Install below) so workshop packages do not land in your global Python.
-3. From the repo root, run `python scoreboard.py` and leave that terminal open.
+3. From the repo root, run `python portal.py` and leave that terminal open.
 4. Your browser opens the Guide at `http://localhost:8081` — that is the on-screen activity script. If it does not open, paste that URL into your browser.
 5. Open a second terminal, activate `.venv` again (see Install), then run `python score.py --team "Your Team" --open`. You should see about 55/100 on the unmodified starter.
 6. Set your Workshop Studio credentials (see Install), then run `python interact.py` and pick Level 1. Activate `.venv` in that terminal first.
@@ -45,7 +45,7 @@ You are ready to edit Level 1 in `api_hackathon/workshop.py`.
 
 ## The workshop page
 
-`python scoreboard.py` starts a local page at `http://localhost:8081` and opens it in your browser. Keep it open while you work. It has four tabs:
+`python portal.py` starts a local page at `http://localhost:8081` and opens it in your browser. Keep it open while you work. It has four tabs:
 
 **Getting Started:** a step-by-step guide to the whole activity. Use the arrow keys or Next to move through it.
 
@@ -123,7 +123,7 @@ python scripts/pin_aws_creds.py
 That appends the values to `.venv`'s activate script. Do not commit `.venv`.
 
 ```powershell
-python scoreboard.py
+python portal.py
 ```
 
 Then, with Studio credentials set in the same terminal:
@@ -292,7 +292,7 @@ api_hackathon/ai.py                 fixture AI + Bedrock + optional Ollama adapt
 data/                               synthetic specs, logs, and AI responses
 interact.py                         interactive assistant (Bedrock)
 score.py                            progress checks (always uses FixtureAI)
-scoreboard.py                       local progress page + Guide + Swagger (port 8081)
+portal.py                           local progress page + Guide + Swagger (port 8081)
 pyproject.toml                      uv dependencies (boto3)
 demo.py                             run every level and print raw AI output
 docs/online-session-slides.pdf      online setup session slides

@@ -11,12 +11,12 @@ from pathlib import Path
 from api_hackathon.ai import FixtureAI
 from api_hackathon.artifacts import load_json, load_text
 
-BOARD = Path("scoreboard.json")
+BOARD = Path("portal.json")
 REPORT = Path("report.html")
 REPORTS = Path("reports")
 SUBMISSIONS = Path("submissions")
 
-# Maps internal level key → (display name used in scoreboard.json, max points)
+# Maps internal level key → (display name used in portal.json, max points)
 LEVEL_META = {
     "L1": ("L1 Contract review", 20),
     "L2": ("L2 Test design", 25),
@@ -313,7 +313,7 @@ def main() -> None:
             print("\nFailed:")
             for team, err in errors:
                 print(f"  {team}: {err}")
-        print(f"\nScoreboard file → {BOARD.resolve()}")
+        print(f"\nProgress file → {BOARD.resolve()}")
         print("Refresh http://localhost:8081/progress to see all teams.")
         return
 
