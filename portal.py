@@ -409,7 +409,7 @@ I found four potential issues in this API contract:
   {"id":"AUTH-001",      "path":"/orders",    "method":"get"},
   {"id":"PAGE-001",      "path":"/orders",    "method":"get"},
   {"id":"ERR-001",       "path":"/orders",    "method":"post"},
-  {"id":"HALLUCINATION", "path":"/customers", "method":"delete"}
+  {"id":"SEC-001",       "path":"/customers", "method":"delete"}
 ]`},
   ]},
   {title:"4 — Ask the AI for help",

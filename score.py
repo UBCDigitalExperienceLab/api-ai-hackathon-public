@@ -1,8 +1,10 @@
 import argparse
+import hashlib
 import html as _html
 import importlib
 import importlib.util
 import json
+import re
 import sys
 import traceback
 from datetime import datetime, timezone
@@ -25,6 +27,21 @@ LEVEL_META = {
 }
 
 
+# Expected answers are stored as short SHA-256 digests so reading this file
+# does not reveal which AI claims are real.
+L1_KEEP = ("c605de71af436b5a", "da274a300f615649", "39524b8d399dde43")
+L1_DROP = "36e73b6fdda89207"
+L2_KEEP = ("d898ffb428e06101", "f725a27eac2e7723", "e84a486e2e435f6f")
+L2_DROP = "910b4cf5bb049642"
+L3_CAUSE = "27cac5503836765c"
+L4_KEEP = ("b5cf3bfedbd60b6a", "71098f3a1bdbaf90")
+L4_DROP = "c43456edfb79b600"
+
+
+def _digest(value) -> str:
+    return hashlib.sha256(str(value).encode()).hexdigest()[:16]
+
+
 def calculate(module) -> tuple[int, dict, list]:
     ai = FixtureAI()
     v1, v2 = load_json("openapi-v1.json"), load_json("openapi-v2.json")
@@ -37,21 +54,23 @@ def calculate(module) -> tuple[int, dict, list]:
 
     # ── Level 1: contract review ──────────────────────────────────────────────
     findings = module.review_contract(v1, ai)
-    ids = {item.get("id") for item in findings}
-    for fid in ("AUTH-001", "PAGE-001", "ERR-001"):
+    ids = {_digest(item.get("id")) for item in findings}
+    for n, fid in enumerate(L1_KEEP, 1):
         ok = fid in ids
-        chk("L1", f"Finding {fid} included", 5 if ok else 0, 5, ok)
-    halluc_ok = "HALLUCINATION" not in ids
+        chk("L1", f"Supported finding {n} of {len(L1_KEEP)} kept", 5 if ok else 0, 5, ok,
+            "A finding the spec supports was dropped")
+    halluc_ok = L1_DROP not in ids
     chk("L1", "No unsupported findings included", 5 if halluc_ok else 0, 5, halluc_ok,
         "Drop any finding whose path, method or evidence pointer is not in the v1 spec")
 
     # ── Level 2: negative tests ───────────────────────────────────────────────
     cases = module.design_negative_tests(v1, ai)
-    names = {item.get("name") for item in cases}
-    for tname in ("zero limit", "missing bearer token", "negative amount"):
+    names = {_digest(item.get("name")) for item in cases}
+    for n, tname in enumerate(L2_KEEP, 1):
         ok = tname in names
-        chk("L2", f'Test case "{tname}" included', 5 if ok else 0, 5, ok)
-    invented_ok = "delete customer record" not in names
+        chk("L2", f"Valid test case {n} of {len(L2_KEEP)} kept", 5 if ok else 0, 5, ok,
+            "A test case for a real route with an accepted status code was dropped")
+    invented_ok = L2_DROP not in names
     chk("L2", "No tests for non-existent endpoints", 5 if invented_ok else 0, 5, invented_ok,
         "Drop any test case whose path and method are not in the v1 spec")
     required = {"name", "method", "path", "input", "expected_status"}
@@ -61,7 +80,8 @@ def calculate(module) -> tuple[int, dict, list]:
 
     # ── Level 3: incident diagnosis ───────────────────────────────────────────
     diagnosis = module.diagnose_incident(logs, ai)
-    pool_ok = "pool" in diagnosis.get("cause", "").lower()
+    words = re.findall(r"[a-z0-9]+", diagnosis.get("cause", "").lower())
+    pool_ok = any(_digest(word) == L3_CAUSE for word in words)
     evidence_items = diagnosis.get("evidence", [])
     evid_ok = bool(evidence_items) and all(item in logs for item in evidence_items)
     chk("L3", "Diagnosis names the cause the log supports", 20 if pool_ok else 0, 20, pool_ok,
@@ -71,11 +91,12 @@ def calculate(module) -> tuple[int, dict, list]:
 
     # ── Level 4: migration review ─────────────────────────────────────────────
     changes = module.review_migration(v1, v2, ai)
-    change_ids = {item.get("id") for item in changes}
-    for cid in ("BREAK-POST", "BREAK-LIMIT"):
+    change_ids = {_digest(item.get("id")) for item in changes}
+    for n, cid in enumerate(L4_KEEP, 1):
         ok = cid in change_ids
-        chk("L4", f"Breaking change {cid} included", 10 if ok else 0, 10, ok)
-    false_ok = "BREAK-003" not in change_ids
+        chk("L4", f"Confirmed breaking change {n} of {len(L4_KEEP)} kept", 10 if ok else 0, 10, ok,
+            "A change that the two specs really show was dropped")
+    false_ok = L4_DROP not in change_ids
     chk("L4", "No unverified changes included", 5 if false_ok else 0, 5, false_ok,
         "Drop any claimed change that a direct comparison of v1 and v2 does not confirm")
 

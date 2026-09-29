@@ -33,7 +33,7 @@ def review_contract(spec: dict, ai) -> list[dict]:
           },
           ...
           {
-            "id": "HALLUCINATION",
+            "id": "SEC-001",
             "claim": "DELETE /customers is publicly accessible.",
             "path": "/customers",
             "method": "delete",

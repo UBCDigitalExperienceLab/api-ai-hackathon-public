@@ -22,7 +22,7 @@
       "evidence_pointer": "/paths/~1orders/post/responses/400"
     },
     {
-      "id": "HALLUCINATION",
+      "id": "SEC-001",
       "claim": "DELETE /customers is publicly accessible.",
       "path": "/customers",
       "method": "delete",
