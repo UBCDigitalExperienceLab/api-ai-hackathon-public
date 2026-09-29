@@ -17,15 +17,16 @@ The default `FixtureAI` uses pre-generated responses, including deliberate hallu
 | Online setup session | **Friday 2 October, 1:00–2:00 pm** |
 | In-person workshop | **Monday 5 October, 9:00 am–12:00 pm** |
 
-## Why this job exists
+## Your role
 
-You are the reviewer on a small Orders API team. A teammate pasted AI output into a review, a test plan, an incident thread, and a migration note. If one invented endpoint or fake log line slips through, people debug a problem that never existed. Keep `ai.ask(...)` — that is the untrusted draft — and return only what you can prove from the spec or the log.
+You review work for a small Orders API team. Teammates used AI to draft four things, and each one may contain claims that sound right but are not true:
 
-How that shows up in this workshop:
+- **Level 1: contract review.** Findings about the OpenAPI spec, including endpoints that may not exist.
+- **Level 2: test plan.** Negative tests, some aimed at routes or status codes the API does not have.
+- **Level 3: incident thread.** A diagnosis that may cite log lines missing from the real log.
+- **Level 4: migration note.** "Breaking changes" between two API versions, not all of them real.
 
-- **Level 1** — the model invents `DELETE /customers`, which is not in the OpenAPI spec.
-- **Level 3** — the model cites log lines such as `dns_resolution_failed` that never appear in `data/incident.log`.
-- **Level 4** — the model claims `orderId` changed from integer to string when both contracts define it the same way.
+Keep calling `ai.ask(...)`, because that is the untrusted draft. Return only what you can prove from the spec or the log. If a made-up claim slips through, people end up debugging a problem that never existed.
 
 A related real-world case: AI-generated code can be syntactically valid and still be wrong because it ignores the team's framework conventions. Same habit applies — check the output against an authoritative source.
 
@@ -188,7 +189,7 @@ Every level follows the same pattern: the AI produces output, your code checks i
 
 ### Level 1 - Filter Hallucinated Contract Findings (20 pts)
 
-The AI returns 4 OpenAPI findings. One is made up -- it claims `DELETE /customers` is publicly accessible, but that path does not exist in the spec at all.
+The AI returns a list of OpenAPI findings. Some may point at parts of the spec that do not exist.
 
 Keep only findings where:
 1. The `path` and `method` actually exist in the spec
@@ -198,11 +199,17 @@ Keep only findings where:
 
 **Tip:** open `http://localhost:8081/api/v1` to browse the real spec in Swagger UI — it shows exactly which paths and methods exist. The API is not running, so "Try it out" won't work; use the spec as a reference only.
 
-**Starter code behaviour:** returns all 4 findings including the hallucination.
+**Starter code behaviour:** returns every finding unchecked.
+
+<details><summary>Stuck? Open a hint</summary>
+
+The AI returns 4 findings and one is made up. It describes a path that is not in the v1 spec at all. Compare each finding's path with the paths Swagger lists.
+
+</details>
 
 ### Level 2 - Filter Hallucinated Negative Tests (25 pts)
 
-The AI proposes 4 negative test cases. One targets a route that does not exist in v1.
+The AI proposes negative test cases. Some may not be valid tests for this API.
 
 Keep only test cases where:
 1. The `path` and `method` exist in the spec
@@ -211,21 +218,31 @@ Keep only test cases where:
 
 **Tip:** open `http://localhost:8081/api/v1` to see which routes exist before deciding which test cases are targeting real endpoints. The API is not running, so "Try it out" won't work; use the spec as a reference only.
 
-**Starter code behaviour:** returns all 4 tests including the invented one.
+**Starter code behaviour:** returns every test case unchecked.
+
+<details><summary>Stuck? Open a hint</summary>
+
+The AI proposes 4 test cases and one is invented. It targets a route that does not exist in v1.
+
+</details>
 
 ### Level 3 - Incident Diagnosis (30 pts)
 
-The AI returns 2 candidate diagnoses for a production incident. One has evidence that appears
-verbatim in `incident.log`. The other references log lines that do not exist anywhere in the file.
+The AI returns candidate diagnoses for a production incident, each with the log lines it cites as evidence.
 
 Return only the diagnosis where every item in its `evidence` array appears literally in the log text.
 
-**Starter code behaviour:** blindly picks `[0]` from the AI diagnosis list, which is the unsupported DNS claim.
+**Starter code behaviour:** picks the first diagnosis without checking it.
+
+<details><summary>Stuck? Open a hint</summary>
+
+There are 2 diagnoses. Only one cites evidence that appears word for word in `data/incident.log`, and it is not the first one. Search the log for each evidence string.
+
+</details>
 
 ### Level 4 - Filter Hallucinated Breaking Changes (25 pts)
 
-The AI reports 3 breaking changes between v1 and v2. One is invented -- it claims a field changed
-type, but both specs define it identically.
+The AI reports breaking changes between v1 and v2. Not every claimed change is real.
 
 Verify each claimed change by diffing the two specs directly:
 - `operation_removed`: operation exists in v1, gone in v2 -- keep it
@@ -234,7 +251,13 @@ Verify each claimed change by diffing the two specs directly:
 
 **Tip:** open `http://localhost:8081/api/v1` and `http://localhost:8081/api/v2` side by side to visually spot what changed before writing the diff logic. The API is not running, so "Try it out" won't work; use the specs as a reference only.
 
-**Starter code behaviour:** returns all 3 changes including the false one.
+**Starter code behaviour:** returns every claimed change unchecked.
+
+<details><summary>Stuck? Open a hint</summary>
+
+The AI reports 3 changes and one is invented. It claims a field changed type, but both specs define that field the same way. Compare the two schemas directly.
+
+</details>
 
 ## Five-minute demonstration
 
