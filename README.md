@@ -1,5 +1,7 @@
 # API AI Workshop
 
+<p align="center"><img src="docs/poster.png" alt="DXL-EASD Collab Workshop poster: online session 2 October, 1–2 pm; in-person session 5 October, 9 am–12 pm" width="520"></p>
+
 **Start here.** This README is the only entry point for the workshop. Open it first, then follow **First 10 minutes**.
 
 A workshop for API practitioners. Best if you already use AI for coding; the new skill is verification, not prompting.
@@ -134,22 +136,22 @@ The Orders API is not running. Use Swagger to see which endpoints exist. "Try it
 **One person — create the fork** (GitHub UI: open the repo and click Fork, or use the CLI):
 
 ```powershell
-gh repo fork UBCDigitalExperienceLab/api-ai-hackathon-public --clone=false
+gh repo fork UBCDigitalExperienceLab/dxl-easd-ai-workshop --clone=false
 ```
 
-That creates `https://github.com/YOUR-ORG/api-ai-hackathon-public` where `YOUR-ORG` is **your GitHub username**. Invite teammates: Settings → Collaborators.
+That creates `https://github.com/YOUR-ORG/dxl-easd-ai-workshop` where `YOUR-ORG` is **your GitHub username**. Invite teammates: Settings → Collaborators.
 
 **Everyone — clone the fork** (replace `YOUR-ORG` with the fork owner's GitHub name, or copy the URL from the fork's green **Code** button):
 
 ```powershell
-git clone https://github.com/YOUR-ORG/api-ai-hackathon-public.git
-cd api-ai-hackathon-public
+git clone https://github.com/YOUR-ORG/dxl-easd-ai-workshop.git
+cd dxl-easd-ai-workshop
 ```
 
 To clone into a different folder:
 
 ```powershell
-git clone https://github.com/YOUR-ORG/api-ai-hackathon-public.git C:\path\to\your-team-folder
+git clone https://github.com/YOUR-ORG/dxl-easd-ai-workshop.git C:\path\to\your-team-folder
 cd C:\path\to\your-team-folder
 ```
 4. Studio VS Code is single-user. Edit on your own machine if needed. Download VS Code from https://code.visualstudio.com/download if you do not have it.

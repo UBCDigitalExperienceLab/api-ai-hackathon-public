@@ -370,7 +370,7 @@ def build(path):
     )
     y = code_block(
         c,
-        ["gh repo fork UBCDigitalExperienceLab/api-ai-hackathon-public --clone=false"],
+        ["gh repo fork UBCDigitalExperienceLab/dxl-easd-ai-workshop --clone=false"],
         0.7 * inch,
         y,
         12 * inch,
@@ -379,7 +379,7 @@ def build(path):
         c,
         [
             "Invite every teammate as a collaborator (Settings → Collaborators)",
-            "Share https://github.com/YOUR-ORG/api-ai-hackathon-public with the team and facilitators",
+            "Share https://github.com/YOUR-ORG/dxl-easd-ai-workshop with the team and facilitators",
         ],
         0.7 * inch,
         y,
@@ -420,7 +420,7 @@ def build(path):
     y = callout(
         c,
         "YOUR-ORG is a placeholder — replace it",
-        "YOUR-ORG is not a real GitHub name. Replace it with the GitHub username or organization that created the fork. Example: if teammate alex-lee clicked Fork, everyone runs git clone https://github.com/alex-lee/api-ai-hackathon-public.git. Copy the URL from the fork page's green Code button if you are unsure.",
+        "YOUR-ORG is not a real GitHub name. Replace it with the GitHub username or organization that created the fork. Example: if teammate alex-lee clicked Fork, everyone runs git clone https://github.com/alex-lee/dxl-easd-ai-workshop.git. Copy the URL from the fork page's green Code button if you are unsure.",
         0.7 * inch,
         y,
         12 * inch,
@@ -429,11 +429,11 @@ def build(path):
         c,
         [
             "# Replace YOUR-ORG with the fork owner's GitHub name",
-            "git clone https://github.com/YOUR-ORG/api-ai-hackathon-public.git",
-            "cd api-ai-hackathon-public",
+            "git clone https://github.com/YOUR-ORG/dxl-easd-ai-workshop.git",
+            "cd dxl-easd-ai-workshop",
             "",
             "# Or clone into a folder you choose",
-            "git clone https://github.com/YOUR-ORG/api-ai-hackathon-public.git C:\\path\\to\\your-team-folder",
+            "git clone https://github.com/YOUR-ORG/dxl-easd-ai-workshop.git C:\\path\\to\\your-team-folder",
             "cd C:\\path\\to\\your-team-folder",
         ],
         0.7 * inch,

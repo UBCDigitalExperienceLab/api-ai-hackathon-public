@@ -364,7 +364,7 @@ const S=[
     {k:"cmd",v:"source /environment/.venv/bin/activate"},
     {k:"cmd",v:"cd /environment/api-ai-hackathon-public"},
     {k:"out",v:"# Personal machine — isolated env with uv"},
-    {k:"cmd",v:"cd api-ai-hackathon-public"},
+    {k:"cmd",v:"cd dxl-easd-ai-workshop"},
     {k:"cmd",v:"uv venv"},
     {k:"cmd",v:"uv sync"},
     {k:"cmd",v:"source .venv/bin/activate"},
