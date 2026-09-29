@@ -43,7 +43,7 @@ def calculate(module) -> tuple[int, dict, list]:
         chk("L1", f"Finding {fid} included", 5 if ok else 0, 5, ok)
     halluc_ok = "HALLUCINATION" not in ids
     chk("L1", "No unsupported findings included", 5 if halluc_ok else 0, 5, halluc_ok,
-        "The HALLUCINATION id must not appear — DELETE /customers does not exist in the spec")
+        "Drop any finding whose path, method or evidence pointer is not in the v1 spec")
 
     # ── Level 2: negative tests ───────────────────────────────────────────────
     cases = module.design_negative_tests(v1, ai)
@@ -53,7 +53,7 @@ def calculate(module) -> tuple[int, dict, list]:
         chk("L2", f'Test case "{tname}" included', 5 if ok else 0, 5, ok)
     invented_ok = "delete customer record" not in names
     chk("L2", "No tests for non-existent endpoints", 5 if invented_ok else 0, 5, invented_ok,
-        '"delete customer record" targets DELETE /customers/c-1 which does not exist in v1')
+        "Drop any test case whose path and method are not in the v1 spec")
     required = {"name", "method", "path", "input", "expected_status"}
     all_valid = bool(cases) and all(required <= set(case.keys()) for case in cases)
     chk("L2", "All test cases have required fields", 5 if all_valid else 0, 5, all_valid,
@@ -64,8 +64,8 @@ def calculate(module) -> tuple[int, dict, list]:
     pool_ok = "pool" in diagnosis.get("cause", "").lower()
     evidence_items = diagnosis.get("evidence", [])
     evid_ok = bool(evidence_items) and all(item in logs for item in evidence_items)
-    chk("L3", "Diagnosis identifies pool exhaustion", 20 if pool_ok else 0, 20, pool_ok,
-        f"Cause returned: {diagnosis.get('cause', '(none)')!r}")
+    chk("L3", "Diagnosis names the cause the log supports", 20 if pool_ok else 0, 20, pool_ok,
+        f"Cause returned: {diagnosis.get('cause', '(none)')!r}. Return the diagnosis whose evidence is all in incident.log")
     chk("L3", "All evidence lines appear in logs", 10 if evid_ok else 0, 10, evid_ok,
         "Every string in diagnosis['evidence'] must appear verbatim in incident.log")
 
@@ -77,7 +77,7 @@ def calculate(module) -> tuple[int, dict, list]:
         chk("L4", f"Breaking change {cid} included", 10 if ok else 0, 10, ok)
     false_ok = "BREAK-003" not in change_ids
     chk("L4", "No unverified changes included", 5 if false_ok else 0, 5, false_ok,
-        "BREAK-003 claims orderId changed integer→string, but both specs define it as string")
+        "Drop any claimed change that a direct comparison of v1 and v2 does not confirm")
 
     level_points = {
         display: sum(c["earned"] for c in checks if c["level"] == lk)
