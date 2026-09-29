@@ -8,7 +8,7 @@ A workshop for API practitioners. Best if you already use AI for coding; the new
 
 You get a working but unreliable `api_hackathon/workshop.py`. Across four levels, you change it so only AI claims backed by the spec or the log survive.
 
-Scoring uses pre-recorded AI answers with deliberate mistakes, so every team gets the same inputs and nothing needs the internet. The optional AI tutor, `python interact.py`, uses a live model on Amazon Bedrock and needs your Workshop Studio credentials.
+Scoring uses pre-recorded AI answers with deliberate mistakes, so every team gets the same inputs and nothing needs the internet. The AI tutor, `python interact.py`, is where you explore each level: it uses a live model on Amazon Bedrock and needs your Workshop Studio credentials.
 
 ## Schedule
 
@@ -39,7 +39,7 @@ Do these in order. When you finish, you have a running progress page and a first
 3. From the repo root, run `python scoreboard.py` and leave that terminal open.
 4. Your browser opens the Guide at `http://localhost:8081` — that is the on-screen activity script. If it does not open, paste that URL into your browser.
 5. Open a second terminal, activate `.venv` again (see Install), then run `python score.py --team "Your Team" --open`. You should see about 55/100 on the unmodified starter.
-6. Optional: run `python interact.py` if you have Workshop Studio credentials. Scoring does not need it. Activate `.venv` in that terminal first.
+6. Set your Workshop Studio credentials (see Install), then run `python interact.py` and pick Level 1. Activate `.venv` in that terminal first.
 
 You are ready to edit Level 1 in `api_hackathon/workshop.py`.
 
