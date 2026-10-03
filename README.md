@@ -203,6 +203,8 @@ When you are done, push `api_hackathon/workshop.py` to your team fork. Facilitat
 
 Every level follows the same pattern: the AI produces output, your code checks it against the spec or the log, and only proven results survive. Edit only `api_hackathon/workshop.py`.
 
+New to APIs? [RUBRIC.md](RUBRIC.md) explains every level in plain language, with the points for each check.
+
 ### Level 1 - Filter Hallucinated Contract Findings (20 pts)
 
 The AI returns a list of OpenAPI findings. Some may point at parts of the spec that do not exist.
@@ -287,6 +289,7 @@ The AI reports 3 changes and one is invented. It claims a field changed type, bu
 
 ```text
 README.md                           start here
+RUBRIC.md                           plain-language rubric for every level
 api_hackathon/workshop.py           participant implementation — the only file to edit
 api_hackathon/ai.py                 fixture AI + Bedrock + optional Ollama adapters
 data/                               synthetic specs, logs, and AI responses
